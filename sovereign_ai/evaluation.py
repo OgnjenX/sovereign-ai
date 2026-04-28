@@ -14,6 +14,14 @@ class ValueResult:
     prediction_error: float
 
 
+@dataclass(frozen=True)
+class ValueState:
+    result: ValueResult
+    activation: np.ndarray
+    scalar: float
+    change: float
+
+
 class ValueSystem:
     """Combines reward and novelty into a scalar state value."""
 
@@ -37,7 +45,6 @@ class ValueSystem:
     def evaluate(
         self,
         category_activation: np.ndarray,
-        x: np.ndarray,
         reward: float,
         novelty: float,
         context: float = 0.0,
@@ -73,3 +80,52 @@ class ValueSystem:
             prediction_component,
             prediction_error,
         )
+
+    def update_state(
+        self,
+        category_activation: np.ndarray,
+        reward: float,
+        novelty: float,
+        context: float,
+        action_distribution: np.ndarray,
+        previous_state: np.ndarray | None = None,
+        learn: bool = False,
+    ) -> ValueState:
+        result = self.evaluate(
+            category_activation,
+            reward,
+            novelty,
+            context,
+            learn=learn,
+        )
+        action_confidence = float(np.linalg.norm(action_distribution, ord=2))
+        raw = np.array(
+            [
+                max(0.0, result.reward_component),
+                max(0.0, result.novelty_component),
+                max(0.0, result.prediction_component),
+                max(0.0, self.context_weight * context),
+                action_confidence,
+            ],
+            dtype=float,
+        )
+        excitation = raw / (np.sum(raw) + 1e-9)
+        inhibition = 1.0 - excitation
+        previous = np.zeros_like(excitation) if previous_state is None else np.asarray(previous_state, dtype=float)
+        if len(previous) != len(excitation):
+            resized = np.zeros_like(excitation)
+            resized[: min(len(previous), len(resized))] = previous[: min(len(previous), len(resized))]
+            previous = resized
+        if np.sum(previous) <= 1e-9:
+            previous += 1.0 / len(previous)
+        previous = previous / (np.sum(previous) + 1e-9)
+        updated = np.clip(previous + 0.45 * (excitation * (1.0 - previous) - inhibition * previous), 0.0, 1.0)
+        updated = updated / (np.sum(updated) + 1e-9)
+        scalar = float(updated @ np.array([1.0, 0.45, 0.7, 0.25, 0.35]))
+        change = float(np.linalg.norm(updated - previous))
+        if self.debug:
+            print(
+                "[value-dyn] scalar="
+                f"{scalar:.3f} change={change:.4f} activation={np.round(updated, 3)}"
+            )
+        return ValueState(result, updated, scalar, change)

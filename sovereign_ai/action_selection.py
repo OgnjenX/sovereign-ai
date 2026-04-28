@@ -17,6 +17,12 @@ class ActionResult:
     pathway: str
 
 
+@dataclass(frozen=True)
+class ActionState:
+    result: ActionResult
+    change: float
+
+
 class BasalGangliaActionSelection:
     """GO/STOP competitive action selection over distributed category activations."""
 
@@ -69,6 +75,57 @@ class BasalGangliaActionSelection:
             )
         return ActionResult(action_index, action_distribution, go, stop, drives, pathway)
 
+    def update_state(
+        self,
+        category_activation: np.ndarray,
+        value_state: np.ndarray,
+        salience: np.ndarray,
+        imagined_action_prior: np.ndarray,
+        sequence_bias: np.ndarray,
+        reactive_distribution: np.ndarray,
+        previous_distribution: np.ndarray | None = None,
+        pathway: str = "coupled",
+    ) -> ActionState:
+        category_activation = np.asarray(category_activation, dtype=float)
+        active_weights = self.category_action_weights[: len(category_activation)]
+        learned_affordance = category_activation @ active_weights
+        value_gain = float(value_state @ np.array([0.8, 0.35, 0.5, 0.2, 0.3]))
+        components = np.vstack(
+            [
+                softmax(learned_affordance, self.temperature),
+                softmax(value_gain * self.value_affordance, self.temperature),
+                softmax(salience, self.temperature),
+                softmax(imagined_action_prior, self.temperature),
+                softmax(sequence_bias, self.temperature),
+                reactive_distribution,
+            ]
+        )
+        excitation = np.mean(components, axis=0)
+        inhibition = softmax(-excitation, self.temperature)
+        previous = (
+            np.ones(self.action_count, dtype=float) / self.action_count
+            if previous_distribution is None
+            else np.asarray(previous_distribution, dtype=float)
+        )
+        previous = previous / (np.sum(previous) + 1e-9)
+        updated = np.clip(previous + 0.5 * (excitation * (1.0 - previous) - inhibition * previous), 0.0, 1.0)
+        action_distribution = updated / (np.sum(updated) + 1e-9)
+        action_index = int(np.argmax(action_distribution))
+        drives = excitation - inhibition
+        go = softmax(excitation, self.temperature)
+        stop = softmax(inhibition, self.temperature)
+        change = float(np.linalg.norm(action_distribution - previous))
+        if self.debug:
+            print(
+                "[action-dyn] action="
+                f"{action_index} change={change:.4f} excitation={np.round(excitation, 3)} "
+                f"inhibition={np.round(inhibition, 3)}"
+            )
+        return ActionState(
+            ActionResult(action_index, action_distribution, go, stop, drives, pathway),
+            change,
+        )
+
     def learn_action(
         self,
         category_activation: np.ndarray,
@@ -76,10 +133,12 @@ class BasalGangliaActionSelection:
         reward_prediction_error: float,
         learning_rate: float = 0.08,
     ) -> None:
-        active_weights = self.category_action_weights[: len(category_activation)]
         target = np.zeros(self.action_count)
         target[action_index] = reward_prediction_error
-        active_weights += learning_rate * np.outer(category_activation, target)
+        self.category_action_weights[: len(category_activation)] += learning_rate * np.outer(
+            category_activation,
+            target,
+        )
         if self.debug:
             print(
                 "[action-learning] action="

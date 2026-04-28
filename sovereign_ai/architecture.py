@@ -4,7 +4,7 @@ import itertools
 
 import numpy as np
 
-from sovereign_ai.action_selection import BasalGangliaActionSelection
+from sovereign_ai.action_selection import ActionResult, BasalGangliaActionSelection
 from sovereign_ai.environment import GridWorld
 from sovereign_ai.evaluation import ValueSystem
 from sovereign_ai.imagination import ImaginationLoop
@@ -17,6 +17,14 @@ from sovereign_ai.utils import compact_vector
 
 
 class CognitiveArchitecture:
+    """Dynamical control loop.
+
+    real input + imagination -> perception field <-> value field <-> action field
+                         ^             |              |              |
+                         +-------------+--------------+--------------+
+    Learning happens after the intra-step fields converge.
+    """
+
     def __init__(
         self,
         input_dim: int,
@@ -25,6 +33,8 @@ class CognitiveArchitecture:
         vigilance: float = 0.95,
         seed: int | None = None,
         debug: bool = False,
+        convergence_iterations: int = 7,
+        convergence_tolerance: float = 0.025,
     ) -> None:
         self.debug = debug
         self.memory = Memory(input_dim)
@@ -62,14 +72,17 @@ class CognitiveArchitecture:
         self.previous_prediction_error = 0.0
         self.spatial = SpatialModule(motion_dim=2, seed=None if seed is None else seed + 4)
         self.spatial_context = np.zeros(6, dtype=float)
+        self.convergence_iterations = convergence_iterations
+        self.convergence_tolerance = convergence_tolerance
+        self.input_dim = input_dim
+        self.action_count = action_count
 
     def observe_environment(self, env: GridWorld) -> np.ndarray:
         return env.observe()
 
-    def evaluate(self, perception: PerceptionResult, x: np.ndarray, reward: float) -> float:
+    def evaluate(self, perception: PerceptionResult, reward: float) -> float:
         result = self.value_system.evaluate(
             perception.category_activation,
-            x,
             reward=reward,
             novelty=perception.novelty,
             context=self.memory.sequence_context(),
@@ -109,6 +122,123 @@ class CognitiveArchitecture:
             )
         return action
 
+    def converge_states(
+        self,
+        x: np.ndarray,
+        reward: float,
+        salience: np.ndarray,
+        urgency: float,
+    ) -> tuple[PerceptionResult, float, ActionResult, np.ndarray]:
+        seeded_perception = self.perception.process(x)
+        perception_state = self.perception.update_state(
+            x,
+            previous_activation=seeded_perception.category_activation,
+        )
+        category_activation = perception_state.result.category_activation
+        action_distribution = np.ones(self.action_count, dtype=float) / self.action_count
+        value_activation = np.ones(5, dtype=float) / 5.0
+        top_down_bias = np.zeros(self.input_dim, dtype=float)
+        effective_input = x.copy()
+        value_scalar = 0.0
+        action_result: ActionResult | None = None
+
+        for iteration in range(self.convergence_iterations):
+            imagined_input, imagined_category_bias, imagined_action_prior = self.imagination.coupled_priors(
+                count=4,
+                keep=2,
+            )
+            perception_state = self.perception.update_state(
+                x,
+                previous_activation=category_activation,
+                top_down_bias=top_down_bias,
+                imagined_input=imagined_input,
+                imagined_category_bias=imagined_category_bias,
+            )
+            category_activation = perception_state.result.category_activation
+            effective_input = perception_state.effective_input
+            value_state = self.value_system.update_state(
+                category_activation,
+                reward=reward,
+                novelty=perception_state.result.novelty,
+                context=self.memory.sequence_context(),
+                action_distribution=action_distribution,
+                previous_state=value_activation,
+                learn=False,
+            )
+            value_activation = value_state.activation
+            value_scalar = value_state.scalar
+            reactive_weight, planned_weight = self.pathway_gate.weights(urgency)
+            reactive_result = self.reactive.select(effective_input, salience)
+            sequence_bias = self._sequence_bias(len(salience))
+            action_state = self.action_selector.update_state(
+                category_activation,
+                value_activation,
+                salience,
+                imagined_action_prior,
+                sequence_bias,
+                reactive_result.action_distribution,
+                previous_distribution=action_distribution,
+            )
+            action_distribution = (
+                reactive_weight * reactive_result.action_distribution
+                + planned_weight * action_state.result.action_distribution
+            )
+            action_distribution = action_distribution / (np.sum(action_distribution) + 1e-9)
+            action_result = ActionResult(
+                int(np.argmax(action_distribution)),
+                action_distribution,
+                action_state.result.go,
+                action_state.result.stop,
+                action_state.result.drives,
+                "coupled",
+            )
+            top_down_bias = self._derive_top_down_bias(value_activation, action_distribution, imagined_input)
+            total_change = perception_state.change + value_state.change + action_state.change
+            if self.debug:
+                print(
+                    "[convergence] iter="
+                    f"{iteration} total_change={total_change:.4f} "
+                    f"p_change={perception_state.change:.4f} "
+                    f"v_change={value_state.change:.4f} a_change={action_state.change:.4f} "
+                    f"top_down_norm={np.linalg.norm(top_down_bias):.3f}"
+                )
+            if total_change < self.convergence_tolerance:
+                break
+
+        if action_result is None:
+            action_result = self.action_selector.select(category_activation, value_scalar, salience, pathway="coupled")
+        result = self.value_system.evaluate(
+            category_activation,
+            reward=reward,
+            novelty=perception_state.result.novelty,
+            context=self.memory.sequence_context(),
+            learn=True,
+        )
+        self.previous_prediction_error = result.prediction_error
+        return perception_state.result, result.value, action_result, effective_input
+
+    def _derive_top_down_bias(
+        self,
+        value_activation: np.ndarray,
+        action_distribution: np.ndarray,
+        imagined_input: np.ndarray,
+    ) -> np.ndarray:
+        category_count = len(self.perception.prototypes)
+        if category_count == 0:
+            return np.zeros(self.input_dim, dtype=float)
+        value_weights = self.value_system.expected_value_weights[:category_count]
+        if len(value_weights) < category_count:
+            value_weights = np.pad(value_weights, (0, category_count - len(value_weights)))
+        value_attention = value_weights @ self.perception.prototypes
+        action_attention = action_distribution @ self.reactive.input_action_weights.T
+        imagination_attention = imagined_input - self.memory.stm
+        raw = (
+            0.18 * value_activation[2] * value_attention
+            + 0.12 * action_attention
+            + 0.10 * imagination_attention
+        )
+        return np.clip(raw, -0.15, 0.15)
+
     def _sequence_bias(self, action_count: int) -> np.ndarray:
         bias = np.zeros(action_count, dtype=float)
         if self.memory.action_trace:
@@ -136,9 +266,13 @@ class CognitiveArchitecture:
     def step(self, env: GridWorld, step_index: int) -> None:
         x = self.observe_environment(env)
         self.memory.update_stm(x)
-        perception = self.perception.process(x)
-        value = self.evaluate(perception, x, self.previous_reward)
-        action = self.select_action(x, perception, value, env.salience(), env.urgency())
+        perception, value, action_state, effective_input = self.converge_states(
+            x,
+            self.previous_reward,
+            env.salience(),
+            env.urgency(),
+        )
+        action = action_state.action_index
         previous_position = env.position.copy()
         reward = self.execute(env, action)
         motion = (env.position - previous_position).astype(float) / max(1, env.size - 1)
@@ -150,7 +284,7 @@ class CognitiveArchitecture:
             reward_prediction_error=reward - value,
         )
         if self.learning_condition(perception, reward):
-            self.update_weights(perception, x)
+            self.update_weights(perception, effective_input)
 
         if self.debug:
             print(

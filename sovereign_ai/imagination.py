@@ -57,7 +57,6 @@ class ImaginationLoop:
             novelty = float(max(0.0, 1.0 - np.max(similarities)))
             value = self.value_system.evaluate(
                 activation,
-                x_hat,
                 reward=0.0,
                 novelty=novelty,
                 learn=False,
@@ -84,3 +83,30 @@ class ImaginationLoop:
         if self.debug:
             print(f"[imagination-action] prior={np.round(prior, 3)}")
         return prior
+
+    def coupled_priors(self, count: int = 5, keep: int = 2) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        candidates = self.sample_candidates(count=count, keep=keep)
+        action_size = self.category_action_weights.shape[1]
+        category_count = len(self.perception.prototypes)
+        if not candidates:
+            return (
+                np.zeros(self.perception.input_dim, dtype=float),
+                np.zeros(category_count, dtype=float),
+                np.zeros(action_size, dtype=float),
+            )
+
+        weights = softmax(np.asarray([candidate.value for candidate in candidates]), temperature=0.35)
+        imagined_input = np.zeros(self.perception.input_dim, dtype=float)
+        category_bias = np.zeros(category_count, dtype=float)
+        action_prior = np.zeros(action_size, dtype=float)
+        for weight, candidate in zip(weights, candidates):
+            imagined_input += weight * candidate.reconstruction
+            category_bias += weight * candidate.activation
+            action_prior += weight * candidate.action_prior
+        if self.debug:
+            print(
+                "[imagination-coupled] "
+                f"input_norm={np.linalg.norm(imagined_input):.3f} "
+                f"category_bias={np.round(category_bias, 3)} action_prior={np.round(action_prior, 3)}"
+            )
+        return imagined_input, category_bias, action_prior
