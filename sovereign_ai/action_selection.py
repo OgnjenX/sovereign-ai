@@ -89,7 +89,8 @@ class BasalGangliaActionSelection:
         category_activation = np.asarray(category_activation, dtype=float)
         active_weights = self.category_action_weights[: len(category_activation)]
         learned_affordance = category_activation @ active_weights
-        value_gain = float(value_state @ np.array([0.8, 0.35, 0.5, 0.2, 0.3]))
+        value_profile = np.array([0.8, 0.35, 0.5, 0.2, 0.55, 0.3])
+        value_gain = float(value_state[: len(value_profile)] @ value_profile[: len(value_state)])
         components = np.vstack(
             [
                 softmax(learned_affordance, self.temperature),
@@ -125,6 +126,15 @@ class BasalGangliaActionSelection:
             ActionResult(action_index, action_distribution, go, stop, drives, pathway),
             change,
         )
+
+    def slot_action_bias(self, slots: np.ndarray, category_activation: np.ndarray) -> np.ndarray:
+        if len(slots) == 0:
+            return np.zeros(self.action_count, dtype=float)
+        active_weights = self.category_action_weights[: len(category_activation)]
+        category_drive = category_activation @ active_weights
+        slot_strength = np.linalg.norm(slots, axis=1)
+        slot_gain = float(np.mean(slot_strength)) if len(slot_strength) else 0.0
+        return softmax(slot_gain * category_drive, self.temperature)
 
     def learn_action(
         self,

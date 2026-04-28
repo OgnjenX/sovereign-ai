@@ -14,11 +14,12 @@ The demo runs an agent in a tiny vector-observed grid world. On each environment
 real input + imagination -> perception field <-> value field <-> action field
                          ^             |              |              |
                          +-------------+--------------+--------------+
+                 goals + temporal future state bias all fields
 
 learning gates open only after the fields settle
 ```
 
-Inside that loop, perception, value, action, and imagination repeatedly bias each other until the state change is small or the iteration budget is exhausted. The selected action is the result of the settled field, not a one-pass pipeline.
+Inside that loop, perception, value, action, imagination, goals, and predicted future states repeatedly bias each other until the state change is small or the iteration budget is exhausted. The selected action is the result of the settled field, not a one-pass pipeline.
 
 The printed trace is intentionally verbose so the internal dynamics are visible while experimenting.
 
@@ -33,6 +34,9 @@ The modules live in `sovereign_ai/` and are meant to be independently testable.
 - `action_selection.py`: basal-ganglia-like GO/STOP competition, learned category-action weights, and recurrent action-field updates.
 - `pathways.py`: fast reactive pathway, slower planned pathway, and soft urgency-based pathway mixing.
 - `imagination.py`: top-down category reconstruction, partial activation, candidate evaluation, and imagined action priors.
+- `goal_system.py`: persistent distributed goal vectors with slow competitive updates.
+- `temporal_state.py`: present/future state buffer used for recurrent internal unfolding.
+- `transition_model.py`: online linear transition model used to unfold future states inside the main loop.
 - `spatial.py`: optional stripe/SOM-style spatial substrate, now lightly integrated into the action bias.
 - `environment.py`: simple toy grid world used by the demo.
 - `architecture.py`: recurrent convergence loop that wires the fields together before execution and learning.
@@ -57,7 +61,9 @@ You should see logs like:
 [perception] winner=0 resonance=True novelty=0.005 search=[0] ...
 [value] reward=-0.005 expected=0.000 prediction_error=-0.005 ...
 [imagination-coupled] input_norm=2.032 category_bias=[1.] action_prior=[0.2   0.221 0.319 0.261]
-[convergence] iter=3 total_change=0.0775 p_change=0.0000 v_change=0.0670 a_change=0.0105 ...
+[goal] alignment=0.842 activation=[0.336 0.329 0.335]
+[composition] components=[0, 1] weights=[0.42 0.58]
+[convergence] iter=3 total_change=0.0775 p_change=0.0000 v_change=0.0670 a_change=0.0105 future_alignment=0.812 alpha=0.42 ...
 [learning] category=0 delta=0.1408 mode=art-hybrid-intersection
 ```
 
@@ -71,13 +77,15 @@ The implementation also separates fast and slow behavior while keeping them coup
 - the planned path goes through perception, value, imagination, and action selection,
 - urgency controls a continuous blend between the two instead of a hard switch,
 - action and value fields feed top-down attention back into perception during convergence.
+- present and predicted future states co-exist in a temporal buffer and feed the same convergence loop,
+- the goal system contributes goal alignment to value and provides a persistent top-down bias.
 
 ## Current Limits
 
 This is still a minimal research scaffold. Important limitations remain:
 
-- sequence learning is a short trace, not a full LIST/PREEMPT-style planning system,
-- imagination is shallow and samples category reconstructions rather than multi-step futures,
+- sequence learning is a short trace, not a full LIST/PREEMPT-style sequence controller,
+- future unfolding uses a shallow learned linear transition model rather than a rich world model,
 - the spatial module is lightly coupled rather than a full navigation subsystem,
 - value learning is simple prediction-error learning, not a full motivational system,
 - the toy environment is intentionally small.

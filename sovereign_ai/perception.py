@@ -204,6 +204,28 @@ class ARTPerception:
         activation = activation / (np.sum(activation) + 1e-9)
         return activation @ self.prototypes
 
+    def compose_activation(
+        self,
+        category_activation: np.ndarray,
+        slot_count: int = 2,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        activation = self._resize_activation(category_activation)
+        if len(activation) == 0:
+            return activation, np.empty((0, self.input_dim), dtype=float)
+        slot_count = min(slot_count, len(activation))
+        component_indices = np.argsort(activation)[-slot_count:]
+        component_weights = activation[component_indices]
+        component_weights = component_weights / (np.sum(component_weights) + 1e-9)
+        composed = np.zeros_like(activation)
+        composed[component_indices] = component_weights
+        slots = self.prototypes[component_indices] * component_weights[:, None]
+        if self.debug:
+            print(
+                "[composition] components="
+                f"{component_indices.tolist()} weights={np.round(component_weights, 3)}"
+            )
+        return composed, slots
+
     def generate_from_category(self, category_index: int, noise_scale: float = 0.03) -> np.ndarray:
         prototype = self.prototypes[category_index]
         noise = self.rng.normal(0.0, noise_scale, self.input_dim)
