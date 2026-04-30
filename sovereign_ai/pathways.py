@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import numpy as np
 
-from sovereign_ai.action_selection import ActionResult, BasalGangliaActionSelection
-from sovereign_ai.utils import softmax
+from sovereign_ai.action_selection import ARTActionField, ActionResult
 
 
 class ReactivePathway:
-    """Fast direct input-to-action competition."""
+    """Compatibility adapter for older callers.
+
+    Direct input-to-action scoring has been removed. New code should use
+    ARTActionField inside the coupled architecture.
+    """
 
     def __init__(
         self,
@@ -17,30 +20,28 @@ class ReactivePathway:
         seed: int | None = None,
         debug: bool = False,
     ) -> None:
-        self.temperature = temperature
-        self.debug = debug
-        rng = np.random.default_rng(seed)
-        self.input_action_weights = rng.normal(0.0, 0.12, (input_dim, action_count))
+        self.action_field = ARTActionField(input_dim, action_count, seed=seed, debug=debug)
 
     def select(self, x: np.ndarray, salience: np.ndarray) -> ActionResult:
-        drives = x @ self.input_action_weights + salience
-        go = softmax(drives, self.temperature)
-        stop = softmax(-drives, self.temperature)
-        gated = go * (1.0 - stop)
-        action_distribution = gated / (np.sum(gated) + 1e-9)
-        action_index = int(np.argmax(action_distribution))
-        if self.debug:
-            print(
-                "[action] pathway=reactive "
-                f"action={action_index} drives={np.round(drives, 3)}"
-            )
-        return ActionResult(action_index, action_distribution, go, stop, drives, "reactive")
+        category_activation = np.asarray(x, dtype=float)
+        if np.sum(category_activation) <= 1e-9:
+            category_activation = np.ones_like(category_activation) / max(1, len(category_activation))
+        else:
+            category_activation = category_activation / (np.sum(category_activation) + 1e-9)
+        return self.action_field.select(
+            category_activation,
+            value=0.0,
+            salience=salience,
+            imagined_action_prior=np.zeros(self.action_field.action_count),
+            sequence_bias=np.zeros(self.action_field.action_count),
+            pathway="art-compat",
+        )
 
 
 class PlannedPathway:
-    """Slower perception-evaluation-action pathway."""
+    """Compatibility adapter around the ART action field."""
 
-    def __init__(self, action_selector: BasalGangliaActionSelection) -> None:
+    def __init__(self, action_selector: ARTActionField) -> None:
         self.action_selector = action_selector
 
     def select(
@@ -57,21 +58,16 @@ class PlannedPathway:
             salience,
             imagined_action_prior,
             sequence_bias,
-            "planned",
+            "art-planned",
         )
 
 
 class PathwayGate:
+    """Compatibility shim: pathway mixing is no longer part of the architecture."""
+
     def __init__(self, urgency_threshold: float = 0.68, debug: bool = False) -> None:
         self.urgency_threshold = urgency_threshold
         self.debug = debug
 
-    def weights(self, urgency: float) -> tuple[float, float]:
-        reactive_weight = float(1.0 / (1.0 + np.exp(-12.0 * (urgency - self.urgency_threshold))))
-        planned_weight = 1.0 - reactive_weight
-        if self.debug:
-            print(
-                f"[gate] urgency={urgency:.3f} "
-                f"reactive_weight={reactive_weight:.3f} planned_weight={planned_weight:.3f}"
-            )
-        return reactive_weight, planned_weight
+    def weights(self) -> tuple[float, float]:
+        return 0.0, 1.0
