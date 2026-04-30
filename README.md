@@ -2,7 +2,7 @@
 
 A small research prototype for a SOVEREIGN-like cognitive architecture in Python.
 
-This is not an implementation of Stephen Grossberg's SOVEREIGN model. It is a compact, runnable system that borrows several of the important design pressures: pattern-based processing, distributed vector representations, recurrent field dynamics, competitive normalization, gated learning, reactive/planned action pathways, and a simple imagination loop.
+This is not an implementation of Stephen Grossberg's SOVEREIGN model. It is a compact, runnable system that borrows several of the important design pressures: pattern-based processing, distributed category representations, recurrent field dynamics, vigilance-regulated reset/search, gated learning, learned inter-field associations, and prospective imagination.
 
 The goal is to make the architecture easy to inspect, modify, and argue with.
 
@@ -11,21 +11,18 @@ The goal is to make the architecture easy to inspect, modify, and argue with.
 The demo runs an agent in a tiny vector-observed grid world. On each environment step, the agent first runs an intra-step convergence loop across ART fields:
 
 ```text
-PerceptualField <-> ValueField <-> ActionField
-      ^               ^              ^
-      |               |              |
-GoalField ---- top-down bias --------+
-      ^                              |
-      |                              |
-TemporalField -- prediction --> PerceptualField
-      ^
-      |
-ExpectationField -- hypothesis --> PerceptualField/ActionField
+PerceptualField <-- learned projections --> ValueField
+      ^                                      |
+      |                                      v
+GoalField ---- learned projections ----> ActionField
+      ^                                      ^
+      |                                      |
+TemporalField -- sequence prediction --> ExpectationField
 
 learning gates open only after the fields settle
 ```
 
-Inside that loop, perception, value, action, expectation, goals, and predicted future states repeatedly bias each other until the state change is small or the iteration budget is exhausted. The selected action is the result of a resonant action-schema category, not a one-pass scoring pipeline.
+Inside that loop, perception, value, action, expectation, goals, and predicted future states repeatedly bias each other through learned category-to-category projections until the state change is small or the iteration budget is exhausted. The selected action is the result of a resonant learned sensorimotor action-schema category, not a one-pass scoring pipeline.
 
 The printed trace is intentionally verbose so the internal dynamics are visible while experimenting.
 
@@ -34,16 +31,18 @@ The printed trace is intentionally verbose so the internal dynamics are visible 
 The modules live in `sovereign_ai/` and are meant to be independently testable.
 
 - `art_field.py`: shared ART field base class with categories, bottom-up input, top-down expectation, match, vigilance, reset/search, resonance, and prototype learning.
+- `associative_coupling.py`: learned category-to-category projections between ART fields.
+- `vigilance.py`: learned per-field vigilance controller driven by mismatch and reward outcome.
 - `perception.py`: `ARTPerceptualField`, a perceptual ART field with top-down expectation and imagined category coupling.
 - `learning.py`: gated prototype learning with an ART-style component-wise intersection hybrid.
 - `memory.py`: STM, decaying traces, LTM binding, and short category/action sequence memory.
-- `evaluation.py`: `ARTValueField`, whose categories are value contexts that modulate vigilance and category preference in other fields.
-- `action_selection.py`: `ARTActionField`, whose categories are action schemas; action selection is resonance plus reset/search over schemas.
+- `evaluation.py`: `ARTValueField`, whose value categories and scalar/vigilance/attention associations are learned from reward, novelty, prediction error, goal alignment, action outcome, and perceptual activation.
+- `action_selection.py`: `ARTActionField`, whose sensorimotor action schemas and category-to-action associations are learned from state/action/outcome experience.
 - `pathways.py`: compatibility adapters around ART action selection; direct reactive/planned vector scoring has been removed from the architecture.
-- `imagination.py`: `ARTExpectationField`, which generates top-down hypotheses and tests whether they induce perceptual resonance without external input.
+- `imagination.py`: `ARTExpectationField`, which performs short prospective rollouts using temporal proposals, no-input perceptual resonance, and action-schema resonance.
 - `goal_system.py`: `ARTGoalField`, whose categories are persistent goal states that bias perception and action through top-down signals.
 - `temporal_state.py`: present/future state buffer used for recurrent internal unfolding.
-- `transition_model.py`: `ARTTemporalField`, whose categories are learned state/action/state transitions used for next-state prediction.
+- `transition_model.py`: `ARTTemporalField`, whose sequence chunk categories learn ordered percept/action/context transitions, predicted next perceptual/action category biases, confidence, and mismatch/reset traces.
 - `spatial.py`: optional stripe/SOM-style spatial substrate, now lightly integrated into the action bias.
 - `environment.py`: simple toy grid world used by the demo.
 - `architecture.py`: recurrent convergence loop that wires the fields together before execution and learning.
@@ -66,12 +65,13 @@ You should see logs like:
 
 ```text
 [perception] winner=0 resonance=True novelty=0.005 search=[0] ...
-[value-dyn] category=1 scalar=0.767 change=0.1253 vigilance=0.700 activation=[...]
-[expectation-coupled] input_norm=2.405 category_bias=[0.494 0.506] action_prior=[...]
+[value-dyn] category=1 scalar=0.002 change=0.0771 vigilance=0.620 search=[...] assoc=[...]
+[expectation-rollout] trace=[{'step': 0, 'expectation_resonance': False, ...}]
 [goal-dyn] category=0 alignment=0.915 activation=[0.911 0.04  0.049]
-[composition] components=[0, 1] weights=[0.42 0.58]
-[action-dyn] category=5 action=0 change=0.5245 vigilance=0.589 distribution=[...]
-[convergence] iter=3 total_change=0.5247 p_change=0.0000 v_change=0.0000 a_change=0.5246 value_vigilance=0.017 ...
+[projection] name=goal->action source=3 target=12 update=0.0268
+[vigilance] field=expectation adjustment=0.0664 mismatch=0.646 reward=0.015 update=0.0022
+[action-dyn] category=6 action=1 resonance=True search=[6] vigilance=0.595
+[convergence] iter=3 total_change=0.0062 p_change=0.0043 v_change=0.0017 a_change=0.0002 ...
 [learning] category=0 delta=0.1408 mode=art-hybrid-intersection
 ```
 
@@ -82,20 +82,21 @@ The code avoids symbolic task rules inside the agent. The environment has discre
 The implementation now uses one dynamical principle throughout:
 
 - perception, value, goals, action selection, expectation, and temporal prediction all inherit from `ARTField`,
-- fields communicate by category bias, top-down expectation, and vigilance modulation,
-- action is selected by resonant action-schema categories,
-- value contexts modulate vigilance and perceptual category preference,
-- expectation generates top-down hypotheses and asks perception to resonate without real input,
-- temporal categories learn state/action/state transitions and bias the next perceptual state.
+- fields communicate through learned `AssociativeProjection` objects,
+- vigilance is adjusted by a learned `VigilanceController`,
+- action is selected by resonant learned action-schema categories,
+- value categories learn scalar value, vigilance modulation, and perceptual attention associations,
+- expectation performs prospective resonance and rejects failed imagined candidates,
+- temporal categories learn ordered sequence chunks and expose mismatch/reset traces.
 
 ## Current Limits
 
 This is still a minimal research scaffold. Important limitations remain:
 
-- sequence learning is category-based but still compact, not a full LIST/PREEMPT-style sequence controller,
+- sequence learning is closer to LIST/PREEMPT-style chunking but still compact,
 - future unfolding uses ART transition categories rather than a rich world model,
 - the spatial module is lightly coupled rather than a full navigation subsystem,
-- value learning is a small ART value-context system, not a full motivational system,
+- value learning is learned category association, not a full motivational system,
 - the toy environment is intentionally small.
 
 Those limits are deliberate: the code is meant to stay readable enough that each mechanism can be replaced with a more faithful model.
@@ -105,7 +106,13 @@ Those limits are deliberate: the code is meant to stay readable enough that each
 Syntax check:
 
 ```bash
-python3 -m compileall main.py sovereign_ai
+python3 -m compileall main.py sovereign_ai tests
+```
+
+Faithfulness tests:
+
+```bash
+python3 -m unittest discover -s tests
 ```
 
 Run a short smoke check:

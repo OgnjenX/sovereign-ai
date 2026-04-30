@@ -4,9 +4,11 @@ from dataclasses import dataclass
 
 import numpy as np
 
+from sovereign_ai.action_selection import ARTActionField
 from sovereign_ai.art_field import ARTField
 from sovereign_ai.evaluation import ARTValueField
 from sovereign_ai.perception import ARTPerceptualField
+from sovereign_ai.transition_model import ARTTemporalField
 
 
 @dataclass(frozen=True)
@@ -18,8 +20,16 @@ class ImaginedCandidate:
     action_prior: np.ndarray
 
 
+@dataclass(frozen=True)
+class ImaginationRollout:
+    perceptual_bias: np.ndarray
+    action_category_bias: np.ndarray
+    value_category_bias: np.ndarray
+    trace: list[dict[str, object]]
+
+
 class ARTExpectationField(ARTField):
-    """Top-down ART field for imagined expectations and hypothesis testing."""
+    """Prospective ART field for short horizon resonant imagination."""
 
     def __init__(
         self,
@@ -42,6 +52,103 @@ class ARTExpectationField(ARTField):
         self.perception = perception
         self.value_system = value_system
         self.action_preferences = action_preferences
+        self.last_rollout = ImaginationRollout(
+            np.zeros(perception.input_dim, dtype=float),
+            np.empty(0, dtype=float),
+            np.empty(0, dtype=float),
+            [],
+        )
+
+    def prospective_rollout(
+        self,
+        current_percept: np.ndarray,
+        goal_activation: np.ndarray,
+        value_activation: np.ndarray,
+        temporal_field: ARTTemporalField,
+        action_field: ARTActionField,
+        horizon: int = 3,
+    ) -> ImaginationRollout:
+        self._sync_with_perception()
+        percept = np.asarray(current_percept, dtype=float)
+        perceptual_bias = np.zeros(self.input_dim, dtype=float)
+        action_bias = np.zeros(len(action_field.categories), dtype=float)
+        value_bias = np.zeros(len(self.value_system.categories), dtype=float)
+        trace: list[dict[str, object]] = []
+        percept_activation = self._fit(current_percept, len(self.perception.categories))
+        action_activation = np.zeros(max(1, len(action_field.categories)), dtype=float)
+
+        for step in range(horizon):
+            temporal_prediction = temporal_field.predict_categories(
+                percept_activation,
+                action_activation,
+                percept_activation,
+                value_activation,
+            )
+            candidate_activation = temporal_prediction.perceptual_bias
+            if np.sum(candidate_activation) <= 1e-9 and len(self.perception.categories):
+                candidate_activation = self._next_activation(percept_activation, len(self.perception.categories))
+            candidate_state = self.perception.reconstruct(candidate_activation)
+            expectation = self.process(candidate_state, category_bias=candidate_activation, learn=False)
+            perceptual_test = self.perception.update_state_with_imagination(
+                np.zeros(self.input_dim, dtype=float),
+                imagined_input=expectation.top_down_match,
+                imagined_category_bias=expectation.category_activation,
+                real_input_weight=0.0,
+            )
+            accepted = expectation.resonance and perceptual_test.result.resonance and not temporal_prediction.reset
+            action_context = action_field.schema_input(
+                perceptual_test.result.category_activation,
+                goal_activation,
+                value_activation,
+                temporal_prediction.action_bias,
+                np.empty(0),
+            )
+            action_state = action_field.resonate_action(
+                action_context,
+                category_bias=self._fit(temporal_prediction.action_bias, len(action_field.categories)),
+                exploratory_signal=temporal_prediction.action_bias,
+                pathway="imagined",
+            )
+            value_state = self.value_system.update_state(
+                perceptual_test.result.category_activation,
+                reward=0.0,
+                novelty=perceptual_test.result.novelty,
+                context=temporal_prediction.confidence,
+                goal_alignment=float(np.max(goal_activation)) if len(goal_activation) else 0.0,
+                action_distribution=action_state.result.action_distribution,
+                previous_state=value_activation,
+                learn=False,
+            )
+            if accepted and action_state.result.action_distribution.size:
+                perceptual_bias += perceptual_test.result.top_down_match
+                action_bias = self._accumulate(action_bias, action_state.result.action_distribution, len(action_bias))
+                value_bias = self._accumulate(value_bias, value_state.activation, len(value_bias))
+            trace.append(
+                {
+                    "step": step,
+                    "expectation_resonance": expectation.resonance,
+                    "perception_resonance": perceptual_test.result.resonance,
+                    "action": action_state.result.action_index,
+                    "temporal_mismatch": temporal_prediction.mismatch,
+                    "accepted": accepted,
+                    "search": expectation.search_path,
+                }
+            )
+            if not accepted:
+                break
+            percept_activation = perceptual_test.result.category_activation
+            action_activation = self._fit(action_state.result.action_distribution, len(action_field.categories))
+
+        if np.sum(perceptual_bias) > 1e-9:
+            perceptual_bias = perceptual_bias / np.max(perceptual_bias)
+        if np.sum(action_bias) > 1e-9:
+            action_bias = action_bias / (np.sum(action_bias) + 1e-9)
+        if np.sum(value_bias) > 1e-9:
+            value_bias = value_bias / (np.sum(value_bias) + 1e-9)
+        self.last_rollout = ImaginationRollout(perceptual_bias, action_bias, value_bias, trace)
+        if self.debug:
+            print(f"[expectation-rollout] trace={trace}")
+        return self.last_rollout
 
     def sample_candidates(
         self,
@@ -51,17 +158,14 @@ class ARTExpectationField(ARTField):
         self._sync_with_perception()
         if len(self.categories) == 0:
             return []
-
         candidates: list[ImaginedCandidate] = []
-        base_activation = np.ones(len(self.categories), dtype=float) / len(self.categories)
         for index in range(min(count, len(self.categories))):
-            category_bias = np.roll(base_activation, index)
-            hypothesis = self.reconstruct(category_bias)
-            expectation = self.process(hypothesis, category_bias=category_bias, learn=False)
-            reconstruction = expectation.top_down_match
+            activation = np.zeros(len(self.categories), dtype=float)
+            activation[index] = 1.0
+            expectation = self.process(self.reconstruct(activation), category_bias=activation, learn=False)
             perceptual_test = self.perception.update_state_with_imagination(
-                reconstruction,
-                imagined_input=reconstruction,
+                np.zeros(self.input_dim, dtype=float),
+                imagined_input=expectation.top_down_match,
                 imagined_category_bias=expectation.category_activation,
                 real_input_weight=0.0,
             )
@@ -71,35 +175,38 @@ class ARTExpectationField(ARTField):
                 novelty=perceptual_test.result.novelty,
                 learn=False,
             ).value
-            action_prior = self._action_prior(expectation.category_activation, value)
             candidates.append(
                 ImaginedCandidate(
                     expectation.category_index,
                     expectation.category_activation,
-                    reconstruction,
+                    expectation.top_down_match,
                     value,
-                    action_prior,
+                    self._action_prior(expectation.category_activation),
                 )
             )
-
-        ranked = sorted(candidates, key=lambda item: item.value, reverse=True)[:keep]
-        if self.debug and ranked:
-            trace = [(c.category_index, round(c.value, 3)) for c in ranked]
-            print(f"[expectation] kept={trace}")
-        return ranked
+        return sorted(candidates, key=lambda item: item.value, reverse=True)[:keep]
 
     def action_prior(self, count: int = 5, keep: int = 2) -> np.ndarray:
+        if len(self.last_rollout.action_category_bias):
+            return self.last_rollout.action_category_bias
         candidates = self.sample_candidates(count=count, keep=keep)
         action_size = self._action_size()
         if not candidates:
             return np.zeros(action_size, dtype=float)
-        activation = self._candidate_activation(candidates)
         prior = np.zeros(action_size, dtype=float)
-        for weight, candidate in zip(activation, candidates):
-            prior += weight * candidate.action_prior
+        for candidate in candidates:
+            prior += candidate.action_prior
+        if np.sum(prior) <= 1e-9:
+            return prior
         return prior / (np.sum(prior) + 1e-9)
 
     def coupled_priors(self, count: int = 5, keep: int = 2) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        if self.last_rollout.trace:
+            return (
+                self.last_rollout.perceptual_bias,
+                np.zeros(len(self.perception.categories), dtype=float),
+                self.last_rollout.action_category_bias,
+            )
         candidates = self.sample_candidates(count=count, keep=keep)
         action_size = self._action_size()
         if not candidates:
@@ -108,23 +215,18 @@ class ARTExpectationField(ARTField):
                 np.zeros(len(self.perception.prototypes), dtype=float),
                 np.zeros(action_size, dtype=float),
             )
-        activation = self._candidate_activation(candidates)
         imagined_input = np.zeros(self.input_dim, dtype=float)
         category_bias = np.zeros(len(self.perception.prototypes), dtype=float)
         action_prior = np.zeros(action_size, dtype=float)
-        for weight, candidate in zip(activation, candidates):
-            imagined_input += weight * candidate.reconstruction
-            category_bias[: min(len(category_bias), len(candidate.activation))] += (
-                weight * candidate.activation[: min(len(category_bias), len(candidate.activation))]
-            )
-            action_prior += weight * candidate.action_prior
-        if self.debug:
-            print(
-                "[expectation-coupled] "
-                f"input_norm={np.linalg.norm(imagined_input):.3f} "
-                f"category_bias={np.round(category_bias, 3)} action_prior={np.round(action_prior, 3)}"
-            )
-        return imagined_input, category_bias, action_prior / (np.sum(action_prior) + 1e-9)
+        for candidate in candidates:
+            imagined_input += candidate.reconstruction
+            category_bias[: min(len(category_bias), len(candidate.activation))] += candidate.activation[
+                : min(len(category_bias), len(candidate.activation))
+            ]
+            action_prior += candidate.action_prior
+        if np.sum(action_prior) > 1e-9:
+            action_prior = action_prior / (np.sum(action_prior) + 1e-9)
+        return imagined_input, category_bias, action_prior
 
     def learn_expectation(self, perceptual_input: np.ndarray) -> None:
         self.process(perceptual_input, learn=True)
@@ -139,29 +241,38 @@ class ARTExpectationField(ARTField):
             missing = self.perception.prototypes[len(self.categories) :]
             self.categories = np.vstack([self.categories, missing])
 
-    def _action_prior(self, expectation_activation: np.ndarray, value: float) -> np.ndarray:
+    def _action_prior(self, expectation_activation: np.ndarray) -> np.ndarray:
         action_size = self._action_size()
         if action_size == 0:
             return np.empty(0, dtype=float)
         if len(self.action_preferences) == 0:
-            return np.ones(action_size, dtype=float) / action_size
-        activation = np.zeros(len(self.action_preferences), dtype=float)
-        activation[: min(len(activation), len(expectation_activation))] = expectation_activation[
-            : min(len(activation), len(expectation_activation))
-        ]
+            return np.zeros(action_size, dtype=float)
+        activation = self._fit(expectation_activation, len(self.action_preferences))
         prior = activation @ self.action_preferences[: len(activation)]
-        if value > 0.0:
-            prior = np.maximum(prior, 0.0)
         if np.sum(prior) <= 1e-9:
-            prior += 1.0 / action_size
+            return np.zeros(action_size, dtype=float)
         return prior / (np.sum(prior) + 1e-9)
 
-    def _candidate_activation(self, candidates: list[ImaginedCandidate]) -> np.ndarray:
-        scores = np.asarray([candidate.value for candidate in candidates], dtype=float)
-        scores = scores - np.min(scores)
-        if np.sum(scores) <= 1e-9:
-            return np.ones(len(candidates), dtype=float) / len(candidates)
-        return scores / (np.sum(scores) + 1e-9)
+    def _next_activation(self, activation: np.ndarray, size: int) -> np.ndarray:
+        fitted = self._fit(activation, size)
+        if np.sum(fitted) <= 1e-9:
+            fitted[0] = 1.0
+            return fitted
+        return np.roll(fitted, 1)
+
+    def _accumulate(self, target: np.ndarray, values: np.ndarray, size: int) -> np.ndarray:
+        if size == 0:
+            return target
+        fitted = self._fit(values, size)
+        return target + fitted
+
+    def _fit(self, values: np.ndarray, size: int) -> np.ndarray:
+        fitted = np.zeros(size, dtype=float)
+        values = np.asarray(values, dtype=float)
+        fitted[: min(size, len(values))] = values[: min(size, len(values))]
+        if np.sum(fitted) <= 1e-9:
+            return fitted
+        return fitted / (np.sum(fitted) + 1e-9)
 
     def _action_size(self) -> int:
         if len(self.action_preferences) == 0:
@@ -169,4 +280,7 @@ class ARTExpectationField(ARTField):
         return self.action_preferences.shape[1]
 
 
-ImaginationLoop = ARTExpectationField
+class ImaginationLoop(ARTExpectationField):
+    """Compatibility wrapper preserving the old constructor name."""
+
+    pass

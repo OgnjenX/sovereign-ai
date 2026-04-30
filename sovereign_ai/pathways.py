@@ -69,5 +69,5 @@ class PathwayGate:
         self.urgency_threshold = urgency_threshold
         self.debug = debug
 
-    def weights(self) -> tuple[float, float]:
+    def weights(self, urgency: float = 0.0) -> tuple[float, float]:
         return 0.0, 1.0

@@ -66,6 +66,7 @@ class ARTField:
         self.name = name
         self.rng = np.random.default_rng(seed)
         self.categories = np.empty((0, input_dim), dtype=float)
+        self.last_result: ARTFieldResult | None = None
 
     @property
     def prototypes(self) -> np.ndarray:
@@ -89,7 +90,9 @@ class ARTField:
         if self.categories.size == 0:
             self._add_category(x)
             activation = np.array([1.0])
-            return ARTFieldResult(0, activation, np.array([1.0]), True, 1.0, [0], [1.0], x.copy(), effective_vigilance)
+            result = ARTFieldResult(0, activation, np.array([1.0]), True, 1.0, [0], [1.0], x.copy(), effective_vigilance)
+            self.last_result = result
+            return result
 
         similarities = self.match(x)
         category_drive = self._category_drive(similarities, category_bias)
@@ -107,7 +110,7 @@ class ARTField:
                 if learn:
                     self.learn(winner, x)
                 self._log(winner, similarities, resonance, novelty, search_path, resonance_trace)
-                return ARTFieldResult(
+                result = ARTFieldResult(
                     winner,
                     activation,
                     similarities,
@@ -118,6 +121,8 @@ class ARTField:
                     top_down_match,
                     effective_vigilance,
                 )
+                self.last_result = result
+                return result
             available[winner] = False
 
         if len(self.categories) < self.max_categories:
@@ -137,7 +142,7 @@ class ARTField:
             resonance, resonance_trace, top_down_match = self.resonance(x, winner, effective_vigilance)
 
         self._log(winner, similarities, resonance, novelty, search_path, resonance_trace)
-        return ARTFieldResult(
+        result = ARTFieldResult(
             winner,
             activation,
             similarities,
@@ -148,6 +153,8 @@ class ARTField:
             top_down_match,
             effective_vigilance,
         )
+        self.last_result = result
+        return result
 
     def update_state(
         self,

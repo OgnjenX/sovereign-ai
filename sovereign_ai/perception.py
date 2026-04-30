@@ -156,4 +156,7 @@ class ARTPerceptualField(ARTField):
         )
 
 
-ARTPerception = ARTPerceptualField
+class ARTPerception(ARTPerceptualField):
+    """Compatibility wrapper preserving the historical perception class name."""
+
+    pass

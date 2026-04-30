@@ -49,11 +49,11 @@ class ARTGoalField(ARTField):
         reward: float,
         novelty: float,
         future_alignment: float = 0.0,
+        vigilance_modulation: float = 0.0,
     ) -> GoalState:
         category_bias = np.zeros(len(self.categories), dtype=float)
         if reward > 0.0 or future_alignment > 0.0:
             category_bias += self.goal_activation
-        vigilance_modulation = float(np.clip(0.08 * novelty - 0.05 * max(0.0, reward), -0.05, 0.15))
         field_state = super().update_state(
             state,
             previous_activation=self.goal_activation,
@@ -85,4 +85,7 @@ class ARTGoalField(ARTField):
         return GoalState(active_goal, result.category_activation, alignment, result.resonance, result.search_path)
 
 
-GoalSystem = ARTGoalField
+class GoalSystem(ARTGoalField):
+    """Compatibility wrapper preserving the old goal-system constructor."""
+
+    pass
