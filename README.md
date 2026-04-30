@@ -95,6 +95,7 @@ This is still a minimal research scaffold. Important limitations remain:
 
 - sequence learning is closer to LIST/PREEMPT-style chunking but still compact,
 - future unfolding uses ART transition categories rather than a rich world model,
+- action schema vectors still have documented slots for perceptual, goal, value, temporal, motor, and outcome signals,
 - the spatial module is lightly coupled rather than a full navigation subsystem,
 - value learning is learned category association, not a full motivational system,
 - the toy environment is intentionally small.
@@ -106,7 +107,7 @@ Those limits are deliberate: the code is meant to stay readable enough that each
 Syntax check:
 
 ```bash
-python3 -m compileall main.py sovereign_ai tests
+python3 -m compileall main.py sovereign_ai tests scripts
 ```
 
 Faithfulness tests:
@@ -114,6 +115,34 @@ Faithfulness tests:
 ```bash
 python3 -m unittest discover -s tests
 ```
+
+Trace demo:
+
+```bash
+python3 scripts/run_trace_demo.py
+```
+
+This writes `artifacts/trace_demo.json` and prints a machine-readable summary.
+
+## Trace Data
+
+Tracing is optional. Pass a `TraceRecorder` into `CognitiveArchitecture(..., trace_recorder=recorder)` to collect structured data without relying on debug prints.
+
+Trace event types:
+
+- `FieldTrace`: field name, step, convergence iteration, winning category, resonance flag, vigilance, best match, search path, novelty, and activation change.
+- `ProjectionTrace`: learned projection name, step, update norm, source category count, and target category count.
+- `BehaviorTrace`: step, selected action, reward, scalar value, goal alignment, temporal mismatch, and whether imagination accepted a candidate.
+
+Summary fields:
+
+- `resonance_rate`: fraction of field events that reached resonance. Lower rates mean more mismatch/reset pressure.
+- `average_search_length`: average number of categories tried before resonance or fallback. Longer paths indicate more reset/search.
+- `average_vigilance`: effective vigilance after learned modulation.
+- `projection update norm`: magnitude of learned associative projection changes. Near-zero means little new coupling was learned.
+- `temporal_mismatch`: sequence prediction mismatch. A falling trend suggests repeated transition structure is being learned.
+- `imagination_acceptance_rate`: fraction of behavior steps where at least one imagined rollout candidate was accepted by resonance.
+- `action_distribution`: selected action counts across the run.
 
 Run a short smoke check:
 

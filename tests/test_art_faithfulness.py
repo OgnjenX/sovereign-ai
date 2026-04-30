@@ -12,6 +12,7 @@ from sovereign_ai.evaluation import ARTValueField, ValueSystem
 from sovereign_ai.goal_system import GoalSystem
 from sovereign_ai.imagination import ARTExpectationField, ImaginationLoop
 from sovereign_ai.perception import ARTPerception, ARTPerceptualField
+from sovereign_ai.tracing import TraceRecorder
 from sovereign_ai.transition_model import ARTTemporalField, LinearTransitionModel
 from sovereign_ai.vigilance import VigilanceController
 
@@ -21,7 +22,7 @@ class ARTFaithfulnessTests(unittest.TestCase):
         field = ARTValueField(max_perceptual_categories=4, context_count=4)
         self.assertEqual(len(field.categories), 0)
         activation = np.array([1.0, 0.0, 0.0, 0.0])
-        field.update_state(activation, reward=1.0, novelty=0.2, context=0.0, goal_alignment=0.5, action_distribution=np.array([1.0]), learn=True)
+        field.resonate_value(activation, reward=1.0, novelty=0.2, context=0.0, goal_alignment=0.5, action_distribution=np.array([1.0]), learn=True)
         self.assertGreater(len(field.categories), 0)
         self.assertEqual(field.category_values.shape[0], len(field.categories))
         self.assertGreater(np.linalg.norm(field.category_values), 0.0)
@@ -43,7 +44,7 @@ class ARTFaithfulnessTests(unittest.TestCase):
         source = ARTPerceptualField(input_dim=3, max_categories=3)
         target = ARTValueField(max_perceptual_categories=3, context_count=3)
         source_result = source.process(np.array([1.0, 0.0, 0.0]))
-        target_state = target.update_state(source_result.category_activation, 0.5, 0.1, 0.0, 0.0, np.array([1.0]), learn=True)
+        target_state = target.resonate_value(source_result.category_activation, 0.5, 0.1, 0.0, 0.0, np.array([1.0]), learn=True)
         projection = AssociativeProjection(source, target, "p->v")
         before = projection.project(source_result.category_activation)
         projection.learn(source_result.category_activation, target_state.activation)
@@ -68,6 +69,9 @@ class ARTFaithfulnessTests(unittest.TestCase):
         )
         self.assertGreaterEqual(len(rollout.trace), 1)
         self.assertIn("perception_resonance", rollout.trace[0])
+        self.assertEqual(rollout.perceptual_bias.shape, (3,))
+        self.assertIsInstance(rollout.value_category_bias, np.ndarray)
+        self.assertTrue(any("accepted" in item for item in rollout.trace))
 
     def test_temporal_sequence_mismatch_sets_reset(self) -> None:
         temporal = ARTTemporalField(state_dim=3, action_count=2, perceptual_category_count=3, max_categories=4)
@@ -80,6 +84,17 @@ class ARTFaithfulnessTests(unittest.TestCase):
         )
         self.assertGreaterEqual(prediction.mismatch, 0.0)
         self.assertGreaterEqual(len(temporal.mismatch_trace), 1)
+        repeated_before_count = float(np.sum(temporal.sequence_counts))
+        repeated_prediction = temporal.predict_categories(
+            np.array([1.0, 0.0, 0.0]),
+            np.array([1.0, 0.0]),
+            np.array([0.0, 1.0, 0.0]),
+            np.empty(0),
+        )
+        self.assertEqual(repeated_prediction.perceptual_bias.shape, (3,))
+        for _ in range(3):
+            temporal.learn(np.array([1.0, 0.0, 0.0]), np.array([1.0, 0.0]), np.array([0.0, 1.0, 0.0]))
+        self.assertGreater(float(np.sum(temporal.sequence_counts)), repeated_before_count)
 
     def test_vigilance_controller_learns_adjustment(self) -> None:
         controller = VigilanceController(["perception"])
@@ -101,16 +116,43 @@ class ARTFaithfulnessTests(unittest.TestCase):
 
     def test_integration_degrades_without_expectation_but_runs(self) -> None:
         env = GridWorld(size=5, seed=11)
-        agent = CognitiveArchitecture(env.observation_dim, env.action_count, max_categories=8, seed=5, debug=False)
-        for step in range(8):
+        recorder = TraceRecorder()
+        agent = CognitiveArchitecture(
+            env.observation_dim,
+            env.action_count,
+            max_categories=8,
+            seed=5,
+            debug=False,
+            trace_recorder=recorder,
+        )
+        initial_action_categories = len(agent.action_selector.categories)
+        for step in range(10):
             agent.step(env, step)
         self.assertGreater(len(agent.perception.categories), 0)
         self.assertGreater(len(agent.value_system.categories), 0)
-        self.assertGreater(len(agent.action_selector.categories), 0)
+        self.assertGreater(len(agent.action_selector.categories), initial_action_categories)
         self.assertGreater(len(agent.transition_model.categories), 0)
         self.assertGreater(len(agent.transition_model.mismatch_trace), 0)
+        self.assertTrue(any(field.last_result is not None for field in [
+            agent.perception,
+            agent.value_system,
+            agent.action_selector,
+            agent.transition_model,
+            agent.imagination,
+        ]))
+        self.assertTrue(any(not trace.resonance or len(trace.search_path) > 1 for trace in recorder.field_traces))
+        self.assertTrue(any(trace.update_norm > 0.0 for trace in recorder.projection_traces))
+        self.assertTrue(any(abs(value) > 0.0 for weights in agent.vigilance_controller.weights.values() for value in weights))
+        summary = recorder.summary()
+        self.assertGreater(summary["steps"], 0)
+        self.assertIn("perception", summary["fields"])
+        self.assertIn("reward_trend", summary)
+        mismatches = agent.transition_model.mismatch_trace
+        if len(mismatches) >= 4:
+            midpoint = len(mismatches) // 2
+            self.assertLessEqual(np.mean(mismatches[midpoint:]), np.mean(mismatches[:midpoint]) + 0.5)
         agent.imagination.categories = np.empty((0, agent.input_dim), dtype=float)
-        agent.step(env, 9)
+        agent.step(env, 11)
 
 
 if __name__ == "__main__":

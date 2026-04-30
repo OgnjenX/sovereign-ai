@@ -63,7 +63,7 @@ class ARTValueField(ARTField):
         goal_alignment: float = 0.0,
         learn: bool = True,
     ) -> ValueResult:
-        return self.update_state(
+        return self.resonate_value(
             category_activation,
             reward=reward,
             novelty=novelty,
@@ -73,7 +73,7 @@ class ARTValueField(ARTField):
             learn=learn,
         ).result
 
-    def update_state(
+    def resonate_value(
         self,
         category_activation: np.ndarray,
         reward: float,
@@ -275,7 +275,7 @@ def compute_value_state(
     previous_state: np.ndarray | None = None,
     learn: bool = False,
 ) -> ValueState:
-    return field.update_state(
+    return field.resonate_value(
         category_activation,
         reward=reward,
         novelty=novelty,

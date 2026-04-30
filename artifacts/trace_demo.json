@@ -1,0 +1,5510 @@
+{
+  "fields": [
+    {
+      "field_name": "perception",
+      "step": 0,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996307758,
+      "search_path": [
+        0
+      ],
+      "novelty": 4.922315888222784e-10,
+      "change": 0.8308679524917005
+    },
+    {
+      "field_name": "value",
+      "step": 0,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.62,
+      "match": 0.6272842974457132,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.29965924713021175,
+      "change": 0.0
+    },
+    {
+      "field_name": "goal",
+      "step": 0,
+      "iteration": 0,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9191518755734709,
+      "search_path": [
+        2
+      ],
+      "novelty": 0.08549480454511182,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 0,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 1.0,
+      "search_path": [
+        0,
+        1
+      ],
+      "novelty": 1.0,
+      "change": 1.5427727653038121
+    },
+    {
+      "field_name": "expectation",
+      "step": 0,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999998182562,
+      "search_path": [
+        0
+      ],
+      "novelty": 4.922313667776734e-10,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 0,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996464467,
+      "search_path": [
+        1
+      ],
+      "novelty": 3.535534087717451e-10,
+      "change": 0.830383945339943
+    },
+    {
+      "field_name": "value",
+      "step": 0,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.62,
+      "match": 0.939628241155527,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.010398904379757212,
+      "change": 0.22611911490847802
+    },
+    {
+      "field_name": "goal",
+      "step": 0,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.978283454243402,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.08970185648180085,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 0,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.7865541486906854,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.16664847382572123,
+      "change": 0.1474810470169485
+    },
+    {
+      "field_name": "expectation",
+      "step": 0,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9998603211653041,
+      "search_path": [
+        0
+      ],
+      "novelty": 8.116486038822757e-09,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 0,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996464467,
+      "search_path": [
+        1
+      ],
+      "novelty": 3.535534087717451e-10,
+      "change": 0.13538413078555922
+    },
+    {
+      "field_name": "value",
+      "step": 0,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.62,
+      "match": 0.9187176722329451,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.012890391376572774,
+      "change": 0.013079517261589882
+    },
+    {
+      "field_name": "goal",
+      "step": 0,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.978283454243402,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.08970185648180085,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 0,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.8112634120062505,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.1276096901305367,
+      "change": 0.039252527307725125
+    },
+    {
+      "field_name": "expectation",
+      "step": 0,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999998749902,
+      "search_path": [
+        1
+      ],
+      "novelty": 1.695100504406355e-09,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 0,
+      "iteration": 3,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996464467,
+      "search_path": [
+        1
+      ],
+      "novelty": 3.535534087717451e-10,
+      "change": 0.00039161843526716887
+    },
+    {
+      "field_name": "value",
+      "step": 0,
+      "iteration": 3,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.62,
+      "match": 0.9189021582100833,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.012633047464413627,
+      "change": 0.0023551025152697795
+    },
+    {
+      "field_name": "goal",
+      "step": 0,
+      "iteration": 3,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.978283454243402,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.08970185648180085,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 0,
+      "iteration": 3,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.811818333433183,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.12716067157882383,
+      "change": 0.0004595162982943038
+    },
+    {
+      "field_name": "expectation",
+      "step": 0,
+      "iteration": 3,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999998749903,
+      "search_path": [
+        1
+      ],
+      "novelty": 1.696160545350267e-09,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996343236,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.005288201719362617,
+      "change": 0.47278065411854603
+    },
+    {
+      "field_name": "value",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6203834886051298,
+      "match": 0.8733092041613505,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.057894174144906496,
+      "change": 0.5283299088393196
+    },
+    {
+      "field_name": "goal",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9534893826343149,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.10759727442875766,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.8190481826132061,
+      "search_path": [
+        1,
+        2
+      ],
+      "novelty": 0.28284382804540176,
+      "change": 1.6650475021800972
+    },
+    {
+      "field_name": "temporal",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6503166076410098,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05751662609350461,
+      "change": 0.25795473242990624
+    },
+    {
+      "field_name": "expectation",
+      "step": 1,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.8328192191183612,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.009635916499987296,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996343234,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.005288201719362506,
+      "change": 0.05142466932557989
+    },
+    {
+      "field_name": "value",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6210594278400273,
+      "match": 0.8783969832878001,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.018758856226766984,
+      "change": 0.12847801802538025
+    },
+    {
+      "field_name": "goal",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9534893826343147,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.10759727442875766,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.8356772049069074,
+      "search_path": [
+        1,
+        2
+      ],
+      "novelty": 0.2267790148962725,
+      "change": 0.020078814241476714
+    },
+    {
+      "field_name": "temporal",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6526829185939764,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.056826010610874556,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 1,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.8328192031295839,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.009635916499987518,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996343236,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.005288201719362617,
+      "change": 0.0003780133484792896
+    },
+    {
+      "field_name": "value",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6209982561252241,
+      "match": 0.87863817402268,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.01855691102389545,
+      "change": 0.0020094265672684275
+    },
+    {
+      "field_name": "goal",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9534893826343149,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.10759727442875766,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.58,
+      "match": 0.8329437222596272,
+      "search_path": [
+        1,
+        2
+      ],
+      "novelty": 0.23063056173760343,
+      "change": 0.0006274621753543057
+    },
+    {
+      "field_name": "temporal",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6527568657205476,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05680534040062657,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 1,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.8328192037565748,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.009635916499987185,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996349326,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.013373088760877727,
+      "change": 0.10006899809028484
+    },
+    {
+      "field_name": "value",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6208084664532691,
+      "match": 0.7683272929504256,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.12140804616462109,
+      "change": 0.6263880465837594
+    },
+    {
+      "field_name": "goal",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9530719420654565,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.12526137475819532,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5829944344886774,
+      "match": 1.0,
+      "search_path": [
+        1,
+        2,
+        0,
+        3
+      ],
+      "novelty": 1.0,
+      "change": 1.6928520749614877
+    },
+    {
+      "field_name": "temporal",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6455094855004404,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05728458372691203,
+      "change": 0.26016869199222686
+    },
+    {
+      "field_name": "expectation",
+      "step": 2,
+      "iteration": 0,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9989460772667565,
+      "search_path": [
+        0,
+        1,
+        2
+      ],
+      "novelty": 3.4088769229612126e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996349327,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.013351667641014364,
+      "change": 0.08956625351858152
+    },
+    {
+      "field_name": "value",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6215811127070224,
+      "match": 0.8050809728185658,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.058063413129183394,
+      "change": 0.14357409909784805
+    },
+    {
+      "field_name": "goal",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.95307857047573,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1252197232623382,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5829339894108877,
+      "match": 0.8640660065754511,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.07682374009624593,
+      "change": 0.002035274651230252
+    },
+    {
+      "field_name": "temporal",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6453326143047714,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05721208010061429,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 2,
+      "iteration": 1,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.999999995918072,
+      "search_path": [
+        0,
+        1,
+        2
+      ],
+      "novelty": 1.1630161486086976e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996349332,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.013271140593887676,
+      "change": 0.00262721773373752
+    },
+    {
+      "field_name": "value",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6215013718476139,
+      "match": 0.8047203234517171,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.0584279591728738,
+      "change": 0.000430432311331388
+    },
+    {
+      "field_name": "goal",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9531035725982583,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1250629826216465,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5829780947428843,
+      "match": 0.8671322780590465,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.07295735425343386,
+      "change": 0.0006335450926015612
+    },
+    {
+      "field_name": "temporal",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6452579905933911,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.057192515843718206,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 2,
+      "iteration": 2,
+      "category_index": 2,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999957682697,
+      "search_path": [
+        0,
+        1,
+        2
+      ],
+      "novelty": 9.533137576012152e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.999999999634267,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.022770129498752567,
+      "change": 0.3831758493505377
+    },
+    {
+      "field_name": "value",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6209657544852675,
+      "match": 0.8062268008191842,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.08574583939675862,
+      "change": 0.5853655937239405
+    },
+    {
+      "field_name": "goal",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9505325138413234,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1348403991383953,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5862225034000162,
+      "match": 0.6863448105802035,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.02963764482323028,
+      "change": 1.6744767055635377
+    },
+    {
+      "field_name": "temporal",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6378019699457015,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06050234810586208,
+      "change": 0.3052675705183876
+    },
+    {
+      "field_name": "expectation",
+      "step": 3,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9997132468335093,
+      "search_path": [
+        0,
+        1,
+        3
+      ],
+      "novelty": 2.5380710755307234e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.99999999963429,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.022529831985357962,
+      "change": 0.0877001977054767
+    },
+    {
+      "field_name": "value",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6216434964252078,
+      "match": 0.838521017468645,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.031237479064633922,
+      "change": 0.14589222942416175
+    },
+    {
+      "field_name": "goal",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9505791232579693,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.13466153352745303,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.586385115572325,
+      "match": 0.6381172389546751,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.07555472376948158,
+      "change": 0.00426022261687791
+    },
+    {
+      "field_name": "temporal",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6383039516983416,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06035276256854494,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 3,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9997445158702548,
+      "search_path": [
+        0,
+        1,
+        3
+      ],
+      "novelty": 2.0233058006802196e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.99999999963429,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.022529988237880105,
+      "change": 0.0068491813933809565
+    },
+    {
+      "field_name": "value",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6215739512644172,
+      "match": 0.8375560950945031,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.03177782852454569,
+      "change": 0.001270047240650948
+    },
+    {
+      "field_name": "goal",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9505790801759196,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.13466164859588514,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.586423527432073,
+      "match": 0.6424226028712176,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.07182207150953712,
+      "change": 0.0011011411854645002
+    },
+    {
+      "field_name": "temporal",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6384336991319247,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06031451263562515,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 3,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9998454308946895,
+      "search_path": [
+        0,
+        1,
+        3
+      ],
+      "novelty": 7.670665880255001e-09,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996319546,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.0388380344026783,
+      "change": 0.18687306420103075
+    },
+    {
+      "field_name": "value",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6214576899504329,
+      "match": 0.7642086909950547,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.12359645926771279,
+      "change": 0.5965601264738682
+    },
+    {
+      "field_name": "goal",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9471439523919936,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.14711543582287723,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5858560291339816,
+      "match": 0.6732668806390659,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.03533344844175379,
+      "change": 1.6865514383327922
+    },
+    {
+      "field_name": "temporal",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6326692615490305,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06432282977378079,
+      "change": 0.38030646371245164
+    },
+    {
+      "field_name": "expectation",
+      "step": 4,
+      "iteration": 0,
+      "category_index": 4,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999951444846,
+      "search_path": [
+        1,
+        0,
+        4
+      ],
+      "novelty": 4.165452663906777e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996325021,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.03554571388517136,
+      "change": 0.13204648107703934
+    },
+    {
+      "field_name": "value",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6219711257213664,
+      "match": 0.8073895141383566,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.05352898430902364,
+      "change": 0.14450150427753056
+    },
+    {
+      "field_name": "goal",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.947682304819686,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.14456162586662724,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5860222198151721,
+      "match": 0.6483273222064825,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.06206214437253865,
+      "change": 0.00046260599477798215
+    },
+    {
+      "field_name": "temporal",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6326146756273305,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06433919832725898,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 4,
+      "iteration": 1,
+      "category_index": 4,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999947386649,
+      "search_path": [
+        0,
+        1,
+        4
+      ],
+      "novelty": 2.2648352528964466e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996325021,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.035545853699890495,
+      "change": 0.009276767500970009
+    },
+    {
+      "field_name": "value",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6219178098868313,
+      "match": 0.8060122991504838,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.05484461380861938,
+      "change": 0.0026274476521086915
+    },
+    {
+      "field_name": "goal",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9476822809122293,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.14456173409723827,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5860721322737432,
+      "match": 0.6611840813595281,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.05806125960239139,
+      "change": 0.0009248112280749894
+    },
+    {
+      "field_name": "temporal",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6326966537976535,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06431286947882009,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 4,
+      "iteration": 2,
+      "category_index": 4,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999954920047,
+      "search_path": [
+        0,
+        1,
+        4
+      ],
+      "novelty": 2.2053971712177045e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996302865,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04370968495581107,
+      "change": 0.3744125526516343
+    },
+    {
+      "field_name": "value",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.621730566135288,
+      "match": 0.7952894088705458,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.09273284425224837,
+      "change": 0.5424034883263255
+    },
+    {
+      "field_name": "goal",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9457054573470655,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.15379617735647289,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5861743091169518,
+      "match": 0.6758365597146633,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.05566264500825158,
+      "change": 1.6699001565797418
+    },
+    {
+      "field_name": "temporal",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6252053047350195,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06656432796246992,
+      "change": 0.38064591588320196
+    },
+    {
+      "field_name": "expectation",
+      "step": 5,
+      "iteration": 0,
+      "category_index": 5,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9994894130115409,
+      "search_path": [
+        1,
+        0,
+        5
+      ],
+      "novelty": 7.79722096888591e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996303368,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.043579880948382166,
+      "change": 0.07571974439425119
+    },
+    {
+      "field_name": "value",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6221001295637916,
+      "match": 0.8267783724645409,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.03770457872169586,
+      "change": 0.13127930868558904
+    },
+    {
+      "field_name": "goal",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.945655165989073,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1534705265517493,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5863392453456026,
+      "match": 0.6564034877067315,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.08409455185249737,
+      "change": 0.004373388650810151
+    },
+    {
+      "field_name": "temporal",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6257204083935916,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06639605025450168,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 5,
+      "iteration": 1,
+      "category_index": 5,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999959959013,
+      "search_path": [
+        1,
+        0,
+        5
+      ],
+      "novelty": 1.8262289458448322e-09,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996303365,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04358032278861812,
+      "change": 0.001173030092479865
+    },
+    {
+      "field_name": "value",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6220673685078062,
+      "match": 0.8266592815880971,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.03777302327302556,
+      "change": 0.0004036483712021182
+    },
+    {
+      "field_name": "goal",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.945655008497394,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.15347112762320148,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5863791452451924,
+      "match": 0.6578015036785549,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.08298328308042313,
+      "change": 0.0005031926270205948
+    },
+    {
+      "field_name": "temporal",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6257796752279998,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06637686187588676,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 5,
+      "iteration": 2,
+      "category_index": 5,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999960071783,
+      "search_path": [
+        1,
+        0,
+        5
+      ],
+      "novelty": 4.6047166080143143e-10,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996287754,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04760282288028039,
+      "change": 0.3482643181608401
+    },
+    {
+      "field_name": "value",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6222512945852563,
+      "match": 0.7908473537221054,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.09661070226720314,
+      "change": 0.5115197129345079
+    },
+    {
+      "field_name": "goal",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9449659923173711,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.15964367546373093,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5893512204549706,
+      "match": 0.6694911581638036,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.06709295381256863,
+      "change": 1.667219998541456
+    },
+    {
+      "field_name": "temporal",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6223212564403439,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06726796552487013,
+      "change": 0.3782506634686387
+    },
+    {
+      "field_name": "expectation",
+      "step": 6,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9995708582515124,
+      "search_path": [
+        1,
+        0,
+        6
+      ],
+      "novelty": 5.497708355228781e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996291081,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04674797663853569,
+      "change": 0.053594894490039284
+    },
+    {
+      "field_name": "value",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6224046389121022,
+      "match": 0.8194675769286799,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.04332799035729784,
+      "change": 0.1205079331637628
+    },
+    {
+      "field_name": "goal",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9450294924583537,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1582852343657094,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5896594387519506,
+      "match": 0.6578728264218835,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.09044429510917751,
+      "change": 0.006203832286065635
+    },
+    {
+      "field_name": "temporal",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6230524747190473,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06702568217671134,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 6,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999970065214,
+      "search_path": [
+        1,
+        0,
+        6
+      ],
+      "novelty": 5.507315548047842e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996291081,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04674794869772658,
+      "change": 0.002947347979897878
+    },
+    {
+      "field_name": "value",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6223926956536471,
+      "match": 0.8199846016716552,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.04290429392801043,
+      "change": 0.0008775385302519842
+    },
+    {
+      "field_name": "goal",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.945029425994107,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.15828509218961562,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5896817354989509,
+      "match": 0.6583821355977028,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.09006031170839024,
+      "change": 0.00012449817349656286
+    },
+    {
+      "field_name": "temporal",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6230671487816858,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06702087587795313,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 6,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.999999997011993,
+      "search_path": [
+        1,
+        0,
+        6
+      ],
+      "novelty": 4.2515082565586226e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996276125,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05057653395083106,
+      "change": 0.32296767839710583
+    },
+    {
+      "field_name": "value",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6227046974534778,
+      "match": 0.7869620969996652,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.10026044502494758,
+      "change": 0.47772892160742936
+    },
+    {
+      "field_name": "goal",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9436138482385905,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16374490233117855,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5924195674805961,
+      "match": 0.6511567617923526,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.08591301328385126,
+      "change": 1.6642547163864168
+    },
+    {
+      "field_name": "temporal",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6201608546049916,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06803383167756227,
+      "change": 0.3781412616288824
+    },
+    {
+      "field_name": "expectation",
+      "step": 7,
+      "iteration": 0,
+      "category_index": 7,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9996259173280905,
+      "search_path": [
+        1,
+        0,
+        7
+      ],
+      "novelty": 4.177296752949644e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996281138,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.04929719156695911,
+      "change": 0.07365962153429857
+    },
+    {
+      "field_name": "value",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6226788425443874,
+      "match": 0.8189039169639769,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.043953195053264116,
+      "change": 0.11939271931820888
+    },
+    {
+      "field_name": "goal",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9445365174683065,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16185938237825281,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5928563038980414,
+      "match": 0.632524315402638,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.10961813430251877,
+      "change": 0.004203574660008505
+    },
+    {
+      "field_name": "temporal",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6206564960922119,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06786571111785167,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 7,
+      "iteration": 1,
+      "category_index": 7,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.999999997589479,
+      "search_path": [
+        1,
+        0,
+        7
+      ],
+      "novelty": 7.28598015253823e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996281137,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0492968780848162,
+      "change": 0.0009192801884960185
+    },
+    {
+      "field_name": "value",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6226807571769293,
+      "match": 0.8190948712981699,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.04379075053584147,
+      "change": 0.0006868728711593978
+    },
+    {
+      "field_name": "goal",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9445365266940514,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16185888852318242,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5928615057597053,
+      "match": 0.6333382939542924,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.1089629914406911,
+      "change": 0.00030023024954517566
+    },
+    {
+      "field_name": "temporal",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6206918960989726,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0678538000121347,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 7,
+      "iteration": 2,
+      "category_index": 7,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999975933536,
+      "search_path": [
+        1,
+        0,
+        7
+      ],
+      "novelty": 6.154335863151061e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996267585,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05274891526958392,
+      "change": 0.2961221061160322
+    },
+    {
+      "field_name": "value",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6231424728590892,
+      "match": 0.7832156951766399,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.10399838117510063,
+      "change": 0.4428348370367258
+    },
+    {
+      "field_name": "goal",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9410609545636716,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16674605718013535,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5955352897844719,
+      "match": 0.6283400537319236,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.10952897513250903,
+      "change": 1.6608955478618181
+    },
+    {
+      "field_name": "temporal",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6183679789684332,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06853960198013498,
+      "change": 0.3802823334064289
+    },
+    {
+      "field_name": "expectation",
+      "step": 8,
+      "iteration": 0,
+      "category_index": 8,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9996537766841264,
+      "search_path": [
+        1,
+        0,
+        8
+      ],
+      "novelty": 3.577944696075974e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996273501,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.051245175633837126,
+      "change": 0.045913671644087994
+    },
+    {
+      "field_name": "value",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6229587064380522,
+      "match": 0.8113676259987413,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.0505845097923886,
+      "change": 0.1081008232215811
+    },
+    {
+      "field_name": "goal",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9428304514998994,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1645950801793814,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5961027078320452,
+      "match": 0.6118299320691996,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.12802639122700954,
+      "change": 0.0066665119946671654
+    },
+    {
+      "field_name": "temporal",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6191541940931173,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06826923607524871,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 8,
+      "iteration": 1,
+      "category_index": 8,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999979626457,
+      "search_path": [
+        1,
+        0,
+        8
+      ],
+      "novelty": 6.582281186773287e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996273505,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.051244384418277056,
+      "change": 0.005471685054356733
+    },
+    {
+      "field_name": "value",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.62296998087197,
+      "match": 0.8122695375882023,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.049770595669562656,
+      "change": 0.0013294708854219499
+    },
+    {
+      "field_name": "goal",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9428314098727099,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16459390972141175,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.5960886613362442,
+      "match": 0.6124593583165853,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.12792948126298276,
+      "change": 0.00013191850161830944
+    },
+    {
+      "field_name": "temporal",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6191386362906387,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06827452437954673,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 8,
+      "iteration": 2,
+      "category_index": 8,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999979666926,
+      "search_path": [
+        1,
+        0,
+        8
+      ],
+      "novelty": 6.000920771409568e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996261415,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05431232237055694,
+      "change": 0.2723397794792403
+    },
+    {
+      "field_name": "value",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6234872142895265,
+      "match": 0.779072402834176,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.1083096884156649,
+      "change": 0.4081306048239746
+    },
+    {
+      "field_name": "goal",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9392803742754022,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16900053930503778,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 3,
+      "resonance": true,
+      "vigilance": 0.594858674808868,
+      "match": 0.6088525819625799,
+      "search_path": [
+        1,
+        3
+      ],
+      "novelty": 0.13548359219664086,
+      "change": 1.661425574336842
+    },
+    {
+      "field_name": "temporal",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6174108658867342,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06870942118628132,
+      "change": 0.37725511633687014
+    },
+    {
+      "field_name": "expectation",
+      "step": 9,
+      "iteration": 0,
+      "category_index": 9,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9997008945221538,
+      "search_path": [
+        1,
+        0,
+        9
+      ],
+      "novelty": 2.6768620098316376e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996267739,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.052710343100062396,
+      "change": 0.06154839021573894
+    },
+    {
+      "field_name": "value",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6231955528376814,
+      "match": 0.8099726133828683,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.05204051812353283,
+      "change": 0.1063599767606085
+    },
+    {
+      "field_name": "goal",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9410865817525051,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1667360953409659,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 5,
+      "resonance": true,
+      "vigilance": 0.5947537466314973,
+      "match": 0.827117217416223,
+      "search_path": [
+        1,
+        3,
+        2,
+        4,
+        5
+      ],
+      "novelty": 0.15429645961702843,
+      "change": 0.0038504761419940834
+    },
+    {
+      "field_name": "temporal",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.617865038270886,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06855258272428966,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 9,
+      "iteration": 1,
+      "category_index": 9,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999992479491,
+      "search_path": [
+        1,
+        0,
+        8,
+        9
+      ],
+      "novelty": 5.979849371229307e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996267741,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05270977236684826,
+      "change": 0.0033571410820608357
+    },
+    {
+      "field_name": "value",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6232117968108445,
+      "match": 0.8105234420034033,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.051532524170891936,
+      "change": 0.0009730881072037802
+    },
+    {
+      "field_name": "goal",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9410872427962753,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16673526680499595,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 5,
+      "resonance": true,
+      "vigilance": 0.595452293956223,
+      "match": 0.8280833419122815,
+      "search_path": [
+        1,
+        3,
+        2,
+        4,
+        5
+      ],
+      "novelty": 0.15411478888705488,
+      "change": 1.8368371738684517e-05
+    },
+    {
+      "field_name": "temporal",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6178672048610772,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06855183963954004,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 9,
+      "iteration": 2,
+      "category_index": 9,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999992665928,
+      "search_path": [
+        1,
+        0,
+        9
+      ],
+      "novelty": 6.014320708125354e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996256662,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05551305077647806,
+      "change": 0.10637568210853103
+    },
+    {
+      "field_name": "value",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6237983158521679,
+      "match": 0.7170057017548629,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.19383791732922484,
+      "change": 0.40129427739067597
+    },
+    {
+      "field_name": "goal",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9379763303509382,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17067185397326212,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5945192233426589,
+      "match": 1.0,
+      "search_path": [
+        1,
+        3,
+        5,
+        4,
+        2,
+        0,
+        6
+      ],
+      "novelty": 1.0,
+      "change": 1.6909203420524497
+    },
+    {
+      "field_name": "temporal",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6203537189070821,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06759475378840085,
+      "change": 0.3780161686484431
+    },
+    {
+      "field_name": "expectation",
+      "step": 10,
+      "iteration": 0,
+      "category_index": 10,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9997163385433746,
+      "search_path": [
+        1,
+        0,
+        10
+      ],
+      "novelty": 2.4091978412243975e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996262838,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.053952014757365774,
+      "change": 0.17137463618788146
+    },
+    {
+      "field_name": "value",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6234014049505446,
+      "match": 0.7709443173552261,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.09795160434754602,
+      "change": 0.1105870449599761
+    },
+    {
+      "field_name": "goal",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9396809472218982,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16848626949326584,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5927028991952719,
+      "match": 0.9272123749186231,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.01204525928173139,
+      "change": 0.0060500096691765105
+    },
+    {
+      "field_name": "temporal",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6202194405030075,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06781492153108104,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 10,
+      "iteration": 1,
+      "category_index": 10,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999988765693,
+      "search_path": [
+        1,
+        0,
+        9,
+        10
+      ],
+      "novelty": 1.1956239331922802e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996262835,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05395301781921402,
+      "change": 0.0033173179743237317
+    },
+    {
+      "field_name": "value",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6234338279753022,
+      "match": 0.7713353129997542,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.09735765076404368,
+      "change": 0.0035301440017967258
+    },
+    {
+      "field_name": "goal",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9396798259765159,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.16848770298158988,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5930204193159282,
+      "match": 0.9278963190556809,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.012181403425941095,
+      "change": 6.585219217347645e-05
+    },
+    {
+      "field_name": "temporal",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6202116725330686,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06781734568526898,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 10,
+      "iteration": 2,
+      "category_index": 10,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.99999999889477,
+      "search_path": [
+        1,
+        0,
+        9,
+        10
+      ],
+      "novelty": 1.699390383969046e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996249895,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.057217090317694064,
+      "change": 0.08618157823496202
+    },
+    {
+      "field_name": "value",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6237356803539383,
+      "match": 0.7489055519528924,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.14480591400001508,
+      "change": 0.3625396617324481
+    },
+    {
+      "field_name": "goal",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9361956645090729,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.172985511718867,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5963878748228905,
+      "match": 0.9504537040354111,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.011129936701793408,
+      "change": 1.6776248548718684
+    },
+    {
+      "field_name": "temporal",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6178804484870652,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0685825304696811,
+      "change": 0.3785109132890665
+    },
+    {
+      "field_name": "expectation",
+      "step": 11,
+      "iteration": 0,
+      "category_index": 11,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9995226436740933,
+      "search_path": [
+        1,
+        0,
+        11
+      ],
+      "novelty": 6.736797120154847e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996255767,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05573917163724873,
+      "change": 0.05366118338487519
+    },
+    {
+      "field_name": "value",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6234280042183171,
+      "match": 0.7819357346770354,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.08322367893728799,
+      "change": 0.09548270680330119
+    },
+    {
+      "field_name": "goal",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9377421322435175,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17094543781260196,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5948727774227067,
+      "match": 0.9160484443541174,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.022104239085394717,
+      "change": 0.0018665497565858412
+    },
+    {
+      "field_name": "temporal",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6181006211766955,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0685110686715662,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 11,
+      "iteration": 1,
+      "category_index": 11,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999990510038,
+      "search_path": [
+        1,
+        0,
+        11
+      ],
+      "novelty": 1.5113520213105858e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996255768,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05573886016308127,
+      "change": 0.009138522698697459
+    },
+    {
+      "field_name": "value",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6234439886564667,
+      "match": 0.7833203685617174,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.08147733549667002,
+      "change": 0.0016167135510745882
+    },
+    {
+      "field_name": "goal",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9377424647246203,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1709450004219748,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5951187690910666,
+      "match": 0.914530187032854,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.023416208727805587,
+      "change": 0.0005578354362529556
+    },
+    {
+      "field_name": "temporal",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6180348205638634,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06853237464386441,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 11,
+      "iteration": 2,
+      "category_index": 11,
+      "resonance": true,
+      "vigilance": 0.56,
+      "match": 0.9999999990630746,
+      "search_path": [
+        1,
+        0,
+        11
+      ],
+      "novelty": 1.494899148912765e-08,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996245011,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.058443309293302326,
+      "change": 0.45834808973243024
+    },
+    {
+      "field_name": "value",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6298238948501369,
+      "match": 0.6589710785378007,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.22311723391551053,
+      "change": 0.3799256121875053
+    },
+    {
+      "field_name": "goal",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9349443066722748,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17473332370170447,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5986524685716822,
+      "match": 0.8395648688322835,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.04926195782382936,
+      "change": 1.6893416305312305
+    },
+    {
+      "field_name": "temporal",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6186455259019183,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0681927549353818,
+      "change": 0.3767428093841682
+    },
+    {
+      "field_name": "expectation",
+      "step": 12,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.41364795446817104,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 1.7034661403680929e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996250745,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.057003546245597336,
+      "change": 0.20266564716604654
+    },
+    {
+      "field_name": "value",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6276259122784712,
+      "match": 0.7233699296012974,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.17693280305662107,
+      "change": 0.09641149202578966
+    },
+    {
+      "field_name": "goal",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9364055563518149,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1727609549647935,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5968791834098423,
+      "match": 0.9168932464234341,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.014545854731430885,
+      "change": 0.007549090823167286
+    },
+    {
+      "field_name": "temporal",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6178729103022967,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06847181441969719,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 12,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.4134295477406258,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 4.875860876163429e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.999999999625074,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05700477823276173,
+      "change": 0.004641184623404884
+    },
+    {
+      "field_name": "value",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6278395526818399,
+      "match": 0.722530486858494,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.17840610412956814,
+      "change": 0.006372039985489377
+    },
+    {
+      "field_name": "goal",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9364042831104837,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17276266933292783,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5970470185886264,
+      "match": 0.9047931346447998,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.01599065934514754,
+      "change": 0.0003887478209362219
+    },
+    {
+      "field_name": "temporal",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6179187640469568,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06845725171999473,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 12,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.41362112602369006,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 2.0050012650152382e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996241828,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05924085371539278,
+      "change": 0.5083430389115088
+    },
+    {
+      "field_name": "value",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6353988826768403,
+      "match": 0.6509278360471694,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.22923415315987494,
+      "change": 0.3607878374604472
+    },
+    {
+      "field_name": "goal",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9341549442299039,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1757996478102294,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6008932230437053,
+      "match": 0.8345460146137823,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.05332526444382868,
+      "change": 1.6905008137199138
+    },
+    {
+      "field_name": "temporal",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.617691616326484,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06846760905133609,
+      "change": 0.37747650499284313
+    },
+    {
+      "field_name": "expectation",
+      "step": 13,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.413448566352405,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 4.5345058330426014e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996245539,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05831149725253315,
+      "change": 0.05302722344529736
+    },
+    {
+      "field_name": "value",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.631626452242896,
+      "match": 0.6940021982851753,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.23493945602786714,
+      "change": 0.07221871750134856
+    },
+    {
+      "field_name": "goal",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9350762498518952,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17452636105824848,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5989348263413826,
+      "match": 0.8802281406306534,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.03774343006387637,
+      "change": 7.295220764374044e-06
+    },
+    {
+      "field_name": "temporal",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.617692475738602,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.0684678743956546,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 13,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.4130619730528801,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 1.3910569338637657e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996245538,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.058311497797272294,
+      "change": 0.00818254138875013
+    },
+    {
+      "field_name": "value",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6319265724531855,
+      "match": 0.6952140212130627,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.23245405781254314,
+      "change": 0.001410414730157363
+    },
+    {
+      "field_name": "goal",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9350762493047928,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17452636182866055,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.5990436545026784,
+      "match": 0.8793751890475793,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.03660699335456874,
+      "change": 0.00032478656144752446
+    },
+    {
+      "field_name": "temporal",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6177307371601224,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06847969502890772,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 13,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.4130897231079845,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 1.3066644044545939e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996238386,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.060102011647379716,
+      "change": 0.5133713446999063
+    },
+    {
+      "field_name": "value",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6408877441131554,
+      "match": 0.6501693138367522,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.22988549226291854,
+      "change": 0.3398045550287461
+    },
+    {
+      "field_name": "goal",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9333160162061541,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17700171780686125,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6027540552807357,
+      "match": 0.650212958537266,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.05153568575235723,
+      "change": 1.690280771394632
+    },
+    {
+      "field_name": "temporal",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6171835146876716,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06860504315610227,
+      "change": 0.37753643123153335
+    },
+    {
+      "field_name": "expectation",
+      "step": 14,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.413276194370594,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 8.081343609855907e-07,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996242044,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.059186962697035383,
+      "change": 0.05121990154276296
+    },
+    {
+      "field_name": "value",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6357188706855882,
+      "match": 0.6930482044124608,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.23702602717231114,
+      "change": 0.07152955914485916
+    },
+    {
+      "field_name": "goal",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9342056595111429,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17575330449561677,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6022469672679488,
+      "match": 0.6857188538034916,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.03622897742248821,
+      "change": 5.7591228977849564e-05
+    },
+    {
+      "field_name": "temporal",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6171902993658362,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06860714286086789,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 14,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.41287605684041334,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 2.0246416004843226e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996242044,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05918696680113922,
+      "change": 0.0074962803486152835
+    },
+    {
+      "field_name": "value",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6361403325250883,
+      "match": 0.6941571162136726,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.2347449095316041,
+      "change": 0.0014719432861462756
+    },
+    {
+      "field_name": "goal",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9342056554730197,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.1757533102737301,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6023106519023843,
+      "match": 0.6855401141438805,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.03522886818639648,
+      "change": 0.00029720563121350273
+    },
+    {
+      "field_name": "temporal",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6172253124169992,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06861798583066236,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 14,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.41289911875916213,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 1.9396001571525545e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996235681,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06077757949353124,
+      "change": 0.5188815657058418
+    },
+    {
+      "field_name": "value",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6459477449497972,
+      "match": 0.649478412534755,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.230481784122328,
+      "change": 0.3199429256414848
+    },
+    {
+      "field_name": "goal",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.93266818740612,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17793297439467448,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6017791694068316,
+      "match": 0.6492071565899925,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.053182305820106524,
+      "change": 1.694658765990644
+    },
+    {
+      "field_name": "temporal",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6161048507805775,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06854068029257043,
+      "change": 0.3785171087329273
+    },
+    {
+      "field_name": "expectation",
+      "step": 15,
+      "iteration": 0,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.4131453488939552,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 1.1454519375231342e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996239209,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05989604291502082,
+      "change": 0.04963942287615001
+    },
+    {
+      "field_name": "value",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6396123140995676,
+      "match": 0.6923158912141664,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.23873539516391973,
+      "change": 0.07105069405071804
+    },
+    {
+      "field_name": "goal",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.933512391492331,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17673501911726874,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6012370319015541,
+      "match": 0.6846111380728676,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.038295531938863814,
+      "change": 0.00038792012808553094
+    },
+    {
+      "field_name": "temporal",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6161505526304357,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06855456433677365,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 15,
+      "iteration": 1,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.41272763526559375,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 2.615642759051795e-06,
+      "change": 0.0
+    },
+    {
+      "field_name": "perception",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.95,
+      "match": 0.9999999996239209,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.05989606757740473,
+      "change": 0.006919831386115057
+    },
+    {
+      "field_name": "value",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.640141763671774,
+      "match": 0.6933315021748133,
+      "search_path": [
+        1,
+        0
+      ],
+      "novelty": 0.2366365514179014,
+      "change": 0.0015269458209057132
+    },
+    {
+      "field_name": "goal",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 0,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.9335123676089975,
+      "search_path": [
+        0
+      ],
+      "novelty": 0.17673505372909326,
+      "change": 0.0
+    },
+    {
+      "field_name": "action",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 6,
+      "resonance": true,
+      "vigilance": 0.6013220689361618,
+      "match": 0.6843718697807276,
+      "search_path": [
+        1,
+        6
+      ],
+      "novelty": 0.03733778028009427,
+      "change": 0.0002774233188945279
+    },
+    {
+      "field_name": "temporal",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": true,
+      "vigilance": 0.6,
+      "match": 0.6161832365753276,
+      "search_path": [
+        1
+      ],
+      "novelty": 0.06856450613834031,
+      "change": 0.0
+    },
+    {
+      "field_name": "expectation",
+      "step": 15,
+      "iteration": 2,
+      "category_index": 1,
+      "resonance": false,
+      "vigilance": 0.56,
+      "match": 0.412747349650729,
+      "search_path": [
+        1,
+        0,
+        11,
+        10,
+        9,
+        8,
+        7,
+        6,
+        5,
+        4,
+        3,
+        2
+      ],
+      "novelty": 2.532783958786311e-06,
+      "change": 0.0
+    }
+  ],
+  "projections": [
+    {
+      "name": "perception->value",
+      "step": 0,
+      "update_norm": 0.044891337164360993,
+      "source_size": 2,
+      "target_size": 2
+    },
+    {
+      "name": "value->perception",
+      "step": 0,
+      "update_norm": 0.044891337164360993,
+      "source_size": 2,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 0,
+      "update_norm": 0.03301463429090439,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 0,
+      "update_norm": 0.0399892601154163,
+      "source_size": 3,
+      "target_size": 3
+    },
+    {
+      "name": "temporal->perception",
+      "step": 0,
+      "update_norm": 0.05223994887061433,
+      "source_size": 2,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 0,
+      "update_norm": 0.048912254368866856,
+      "source_size": 2,
+      "target_size": 3
+    },
+    {
+      "name": "perception->temporal",
+      "step": 0,
+      "update_norm": 0.05223994887061433,
+      "source_size": 2,
+      "target_size": 2
+    },
+    {
+      "name": "action->temporal",
+      "step": 0,
+      "update_norm": 0.06327608797346514,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "perception->value",
+      "step": 1,
+      "update_norm": 0.03339739007751398,
+      "source_size": 2,
+      "target_size": 3
+    },
+    {
+      "name": "value->perception",
+      "step": 1,
+      "update_norm": 0.0025883479570163264,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 1,
+      "update_norm": 0.002406334444046632,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 1,
+      "update_norm": 0.04455649083983151,
+      "source_size": 3,
+      "target_size": 3
+    },
+    {
+      "name": "temporal->perception",
+      "step": 1,
+      "update_norm": 0.002956355943502655,
+      "source_size": 5,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 1,
+      "update_norm": 0.05382346832176694,
+      "source_size": 2,
+      "target_size": 3
+    },
+    {
+      "name": "perception->temporal",
+      "step": 1,
+      "update_norm": 0.05823317140405163,
+      "source_size": 2,
+      "target_size": 5
+    },
+    {
+      "name": "action->temporal",
+      "step": 1,
+      "update_norm": 0.0672443101001478,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "perception->value",
+      "step": 2,
+      "update_norm": 0.03687217437069854,
+      "source_size": 2,
+      "target_size": 4
+    },
+    {
+      "name": "value->perception",
+      "step": 2,
+      "update_norm": 0.011864861362864472,
+      "source_size": 4,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 2,
+      "update_norm": 0.004759574844716639,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 2,
+      "update_norm": 0.0407762656586112,
+      "source_size": 3,
+      "target_size": 4
+    },
+    {
+      "name": "temporal->perception",
+      "step": 2,
+      "update_norm": 0.004255275576739313,
+      "source_size": 6,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 2,
+      "update_norm": 0.03895388568752133,
+      "source_size": 3,
+      "target_size": 4
+    },
+    {
+      "name": "perception->temporal",
+      "step": 2,
+      "update_norm": 0.05237988128674628,
+      "source_size": 2,
+      "target_size": 6
+    },
+    {
+      "name": "action->temporal",
+      "step": 2,
+      "update_norm": 0.04568091395470708,
+      "source_size": 4,
+      "target_size": 6
+    },
+    {
+      "name": "perception->value",
+      "step": 3,
+      "update_norm": 0.037875205736774685,
+      "source_size": 2,
+      "target_size": 5
+    },
+    {
+      "name": "value->perception",
+      "step": 3,
+      "update_norm": 0.0038361675769376423,
+      "source_size": 5,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 3,
+      "update_norm": 0.007181553550553255,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 3,
+      "update_norm": 0.04040844055916798,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "temporal->perception",
+      "step": 3,
+      "update_norm": 0.0017220526916865832,
+      "source_size": 8,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 3,
+      "update_norm": 0.020586270891326173,
+      "source_size": 4,
+      "target_size": 5
+    },
+    {
+      "name": "perception->temporal",
+      "step": 3,
+      "update_norm": 0.04812225566689828,
+      "source_size": 2,
+      "target_size": 8
+    },
+    {
+      "name": "action->temporal",
+      "step": 3,
+      "update_norm": 0.024389710219522853,
+      "source_size": 5,
+      "target_size": 8
+    },
+    {
+      "name": "perception->value",
+      "step": 4,
+      "update_norm": 0.03739461688590328,
+      "source_size": 2,
+      "target_size": 6
+    },
+    {
+      "name": "value->perception",
+      "step": 4,
+      "update_norm": 0.0028474659641965993,
+      "source_size": 6,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 4,
+      "update_norm": 0.006928914740614207,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 4,
+      "update_norm": 0.04554878792411929,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "temporal->perception",
+      "step": 4,
+      "update_norm": 0.002080081693189681,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 4,
+      "update_norm": 0.018329543395412144,
+      "source_size": 5,
+      "target_size": 5
+    },
+    {
+      "name": "perception->temporal",
+      "step": 4,
+      "update_norm": 0.044919859930911424,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "action->temporal",
+      "step": 4,
+      "update_norm": 0.011032680235551026,
+      "source_size": 5,
+      "target_size": 9
+    },
+    {
+      "name": "perception->value",
+      "step": 5,
+      "update_norm": 0.036795417284302856,
+      "source_size": 2,
+      "target_size": 7
+    },
+    {
+      "name": "value->perception",
+      "step": 5,
+      "update_norm": 0.0026816271014106154,
+      "source_size": 7,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 5,
+      "update_norm": 0.007086809094163886,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 5,
+      "update_norm": 0.04587179027188382,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "temporal->perception",
+      "step": 5,
+      "update_norm": 0.0017414492999628158,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 5,
+      "update_norm": 0.010706889845462978,
+      "source_size": 6,
+      "target_size": 5
+    },
+    {
+      "name": "perception->temporal",
+      "step": 5,
+      "update_norm": 0.04309510436260112,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "action->temporal",
+      "step": 5,
+      "update_norm": 0.01111195377158447,
+      "source_size": 5,
+      "target_size": 9
+    },
+    {
+      "name": "perception->value",
+      "step": 6,
+      "update_norm": 0.03589014724118278,
+      "source_size": 2,
+      "target_size": 8
+    },
+    {
+      "name": "value->perception",
+      "step": 6,
+      "update_norm": 0.0010209734670203158,
+      "source_size": 8,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 6,
+      "update_norm": 0.007071293727151096,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 6,
+      "update_norm": 0.04646833370915405,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "temporal->perception",
+      "step": 6,
+      "update_norm": 0.001617191372125294,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 6,
+      "update_norm": 0.006993043735674392,
+      "source_size": 7,
+      "target_size": 5
+    },
+    {
+      "name": "perception->temporal",
+      "step": 6,
+      "update_norm": 0.04135234795412521,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "action->temporal",
+      "step": 6,
+      "update_norm": 0.010952127481778335,
+      "source_size": 5,
+      "target_size": 9
+    },
+    {
+      "name": "perception->value",
+      "step": 7,
+      "update_norm": 0.034920501444573336,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "value->perception",
+      "step": 7,
+      "update_norm": 0.002165363533591641,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 7,
+      "update_norm": 0.00733525816872808,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 7,
+      "update_norm": 0.04757953710957164,
+      "source_size": 3,
+      "target_size": 5
+    },
+    {
+      "name": "temporal->perception",
+      "step": 7,
+      "update_norm": 0.0016047647285466037,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 7,
+      "update_norm": 0.00512748450628135,
+      "source_size": 8,
+      "target_size": 5
+    },
+    {
+      "name": "perception->temporal",
+      "step": 7,
+      "update_norm": 0.03967969204088379,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "action->temporal",
+      "step": 7,
+      "update_norm": 0.010828263224620164,
+      "source_size": 5,
+      "target_size": 9
+    },
+    {
+      "name": "perception->value",
+      "step": 8,
+      "update_norm": 0.033901709543843014,
+      "source_size": 2,
+      "target_size": 10
+    },
+    {
+      "name": "value->perception",
+      "step": 8,
+      "update_norm": 0.00017073926255548692,
+      "source_size": 10,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 8,
+      "update_norm": 0.00765075661088362,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 8,
+      "update_norm": 0.04685654421349554,
+      "source_size": 3,
+      "target_size": 6
+    },
+    {
+      "name": "temporal->perception",
+      "step": 8,
+      "update_norm": 0.0016510802961126386,
+      "source_size": 9,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 8,
+      "update_norm": 0.006265283069722873,
+      "source_size": 9,
+      "target_size": 6
+    },
+    {
+      "name": "perception->temporal",
+      "step": 8,
+      "update_norm": 0.03808867109115179,
+      "source_size": 2,
+      "target_size": 9
+    },
+    {
+      "name": "action->temporal",
+      "step": 8,
+      "update_norm": 0.00927608037386509,
+      "source_size": 6,
+      "target_size": 9
+    },
+    {
+      "name": "perception->value",
+      "step": 9,
+      "update_norm": 0.03285655461323736,
+      "source_size": 2,
+      "target_size": 11
+    },
+    {
+      "name": "value->perception",
+      "step": 9,
+      "update_norm": 0.0019162380415950135,
+      "source_size": 11,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 9,
+      "update_norm": 0.007525000039237195,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 9,
+      "update_norm": 0.050272220918919475,
+      "source_size": 3,
+      "target_size": 6
+    },
+    {
+      "name": "temporal->perception",
+      "step": 9,
+      "update_norm": 0.0011658382453292222,
+      "source_size": 10,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 9,
+      "update_norm": 0.008516410408442324,
+      "source_size": 10,
+      "target_size": 6
+    },
+    {
+      "name": "perception->temporal",
+      "step": 9,
+      "update_norm": 0.03669606748265851,
+      "source_size": 2,
+      "target_size": 10
+    },
+    {
+      "name": "action->temporal",
+      "step": 9,
+      "update_norm": 0.00939407439310353,
+      "source_size": 6,
+      "target_size": 10
+    },
+    {
+      "name": "perception->value",
+      "step": 10,
+      "update_norm": 0.031764712314363654,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 10,
+      "update_norm": 0.00017710594218189491,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 10,
+      "update_norm": 0.007224810733293249,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 10,
+      "update_norm": 0.047228898055018245,
+      "source_size": 3,
+      "target_size": 7
+    },
+    {
+      "name": "temporal->perception",
+      "step": 10,
+      "update_norm": 0.0017530924968407954,
+      "source_size": 11,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 10,
+      "update_norm": 0.006465299686092714,
+      "source_size": 11,
+      "target_size": 7
+    },
+    {
+      "name": "perception->temporal",
+      "step": 10,
+      "update_norm": 0.035310658279983066,
+      "source_size": 2,
+      "target_size": 11
+    },
+    {
+      "name": "action->temporal",
+      "step": 10,
+      "update_norm": 0.009153393898801713,
+      "source_size": 7,
+      "target_size": 11
+    },
+    {
+      "name": "perception->value",
+      "step": 11,
+      "update_norm": 0.03050897774335225,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 11,
+      "update_norm": 0.0011521693313595155,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 11,
+      "update_norm": 0.007021727354014798,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 11,
+      "update_norm": 0.044903892638725254,
+      "source_size": 3,
+      "target_size": 7
+    },
+    {
+      "name": "temporal->perception",
+      "step": 11,
+      "update_norm": 0.0007095890554748133,
+      "source_size": 11,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 11,
+      "update_norm": 0.004663918504065947,
+      "source_size": 12,
+      "target_size": 7
+    },
+    {
+      "name": "perception->temporal",
+      "step": 11,
+      "update_norm": 0.03388955157307088,
+      "source_size": 2,
+      "target_size": 11
+    },
+    {
+      "name": "action->temporal",
+      "step": 11,
+      "update_norm": 0.00616473507023246,
+      "source_size": 7,
+      "target_size": 11
+    },
+    {
+      "name": "perception->value",
+      "step": 12,
+      "update_norm": 0.02914654565821017,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 12,
+      "update_norm": 0.0011805269690785137,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 12,
+      "update_norm": 0.006473142158096012,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 12,
+      "update_norm": 0.041648106693540875,
+      "source_size": 3,
+      "target_size": 7
+    },
+    {
+      "name": "temporal->perception",
+      "step": 12,
+      "update_norm": 0.0012398384437675635,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 12,
+      "update_norm": 0.004049431397955796,
+      "source_size": 12,
+      "target_size": 7
+    },
+    {
+      "name": "perception->temporal",
+      "step": 12,
+      "update_norm": 0.03234387628630139,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "action->temporal",
+      "step": 12,
+      "update_norm": 0.005376113827854014,
+      "source_size": 7,
+      "target_size": 12
+    },
+    {
+      "name": "perception->value",
+      "step": 13,
+      "update_norm": 0.0278980212197525,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 13,
+      "update_norm": 0.0011422955056067513,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 13,
+      "update_norm": 0.0061312916674901435,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 13,
+      "update_norm": 0.0386869240728863,
+      "source_size": 3,
+      "target_size": 7
+    },
+    {
+      "name": "temporal->perception",
+      "step": 13,
+      "update_norm": 0.0011636159999827704,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 13,
+      "update_norm": 0.004390523309771991,
+      "source_size": 12,
+      "target_size": 7
+    },
+    {
+      "name": "perception->temporal",
+      "step": 13,
+      "update_norm": 0.03104738975055912,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "action->temporal",
+      "step": 13,
+      "update_norm": 0.005193586496011186,
+      "source_size": 7,
+      "target_size": 12
+    },
+    {
+      "name": "perception->value",
+      "step": 14,
+      "update_norm": 0.026769057805681444,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 14,
+      "update_norm": 0.0011268508948443583,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 14,
+      "update_norm": 0.005750385247596666,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 14,
+      "update_norm": 0.03737462341638288,
+      "source_size": 3,
+      "target_size": 8
+    },
+    {
+      "name": "temporal->perception",
+      "step": 14,
+      "update_norm": 0.0011818433336010447,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 14,
+      "update_norm": 0.00668645276499494,
+      "source_size": 12,
+      "target_size": 8
+    },
+    {
+      "name": "perception->temporal",
+      "step": 14,
+      "update_norm": 0.02980091808600998,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "action->temporal",
+      "step": 14,
+      "update_norm": 0.004634356487583553,
+      "source_size": 8,
+      "target_size": 12
+    },
+    {
+      "name": "perception->value",
+      "step": 15,
+      "update_norm": 0.02568219046281517,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "value->perception",
+      "step": 15,
+      "update_norm": 0.0011700364283915535,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "goal->perception",
+      "step": 15,
+      "update_norm": 0.005213472830203885,
+      "source_size": 3,
+      "target_size": 2
+    },
+    {
+      "name": "goal->action",
+      "step": 15,
+      "update_norm": 0.0398054005975936,
+      "source_size": 3,
+      "target_size": 8
+    },
+    {
+      "name": "temporal->perception",
+      "step": 15,
+      "update_norm": 0.0011294461536149182,
+      "source_size": 12,
+      "target_size": 2
+    },
+    {
+      "name": "expectation->action",
+      "step": 15,
+      "update_norm": 0.009643790657353447,
+      "source_size": 12,
+      "target_size": 8
+    },
+    {
+      "name": "perception->temporal",
+      "step": 15,
+      "update_norm": 0.02860050349058675,
+      "source_size": 2,
+      "target_size": 12
+    },
+    {
+      "name": "action->temporal",
+      "step": 15,
+      "update_norm": 0.0016395962766396085,
+      "source_size": 8,
+      "target_size": 12
+    }
+  ],
+  "behavior": [
+    {
+      "step": 0,
+      "action": 1,
+      "reward": -0.0046849439943814734,
+      "value": 0.0,
+      "goal_alignment": 0.9384655199845732,
+      "temporal_mismatch": 0.0,
+      "imagination_accepted": true
+    },
+    {
+      "step": 1,
+      "action": 1,
+      "reward": -0.006892747895267238,
+      "value": -0.00018679465637860452,
+      "goal_alignment": 0.9362372355320662,
+      "temporal_mismatch": 0.3472064507037246,
+      "imagination_accepted": true
+    },
+    {
+      "step": 2,
+      "action": 1,
+      "reward": 0.004771252325695622,
+      "value": -0.00032808748399401014,
+      "goal_alignment": 0.9338776815848376,
+      "temporal_mismatch": 0.3607455855397729,
+      "imagination_accepted": true
+    },
+    {
+      "step": 3,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": -0.00013225565319390138,
+      "goal_alignment": 0.931712026615706,
+      "temporal_mismatch": 0.37571934532264506,
+      "imagination_accepted": true
+    },
+    {
+      "step": 4,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.00017038562257543647,
+      "goal_alignment": 0.9298514300073792,
+      "temporal_mismatch": 0.38950985673142413,
+      "imagination_accepted": true
+    },
+    {
+      "step": 5,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.00036965818761187474,
+      "goal_alignment": 0.928114486187655,
+      "temporal_mismatch": 0.39141244706785827,
+      "imagination_accepted": true
+    },
+    {
+      "step": 6,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0005122361147612209,
+      "goal_alignment": 0.9261200064637566,
+      "temporal_mismatch": 0.3917899149544065,
+      "imagination_accepted": true
+    },
+    {
+      "step": 7,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0006177343450457602,
+      "goal_alignment": 0.9235747870124323,
+      "temporal_mismatch": 0.39244902573089546,
+      "imagination_accepted": true
+    },
+    {
+      "step": 8,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0006990325611969234,
+      "goal_alignment": 0.9207033142108532,
+      "temporal_mismatch": 0.3925659625585134,
+      "imagination_accepted": true
+    },
+    {
+      "step": 9,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0007629059438855521,
+      "goal_alignment": 0.9182293219145893,
+      "temporal_mismatch": 0.3930001182492141,
+      "imagination_accepted": true
+    },
+    {
+      "step": 10,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0008145350887523502,
+      "goal_alignment": 0.9166306390886121,
+      "temporal_mismatch": 0.389794706498617,
+      "imagination_accepted": true
+    },
+    {
+      "step": 11,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0009335098549715776,
+      "goal_alignment": 0.9157996190270672,
+      "temporal_mismatch": 0.39083978500601335,
+      "imagination_accepted": true
+    },
+    {
+      "step": 12,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0010507954854763802,
+      "goal_alignment": 0.9154196497908028,
+      "temporal_mismatch": 0.39023723172006697,
+      "imagination_accepted": false
+    },
+    {
+      "step": 13,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0011680611962595292,
+      "goal_alignment": 0.9152566663343699,
+      "temporal_mismatch": 0.38958860390632144,
+      "imagination_accepted": false
+    },
+    {
+      "step": 14,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.0012844231735402631,
+      "goal_alignment": 0.9151887477054237,
+      "temporal_mismatch": 0.3895499842018981,
+      "imagination_accepted": false
+    },
+    {
+      "step": 15,
+      "action": 1,
+      "reward": 0.014822149612087979,
+      "value": 0.001398803718368464,
+      "goal_alignment": 0.9151607951122632,
+      "temporal_mismatch": 0.39008837178467193,
+      "imagination_accepted": false
+    }
+  ],
+  "summary": {
+    "steps": 16,
+    "fields": {
+      "action": {
+        "categories": 8,
+        "events": 49,
+        "resonance_rate": 1.0,
+        "average_search_length": 2.204081632653061,
+        "average_vigilance": 0.5913086566227578,
+        "average_match": 0.76569100954111
+      },
+      "expectation": {
+        "categories": 12,
+        "events": 49,
+        "resonance_rate": 0.7551020408163265,
+        "average_search_length": 4.979591836734694,
+        "average_vigilance": 0.56,
+        "average_match": 0.8459554612803997
+      },
+      "goal": {
+        "categories": 3,
+        "events": 49,
+        "resonance_rate": 1.0,
+        "average_search_length": 1.0,
+        "average_vigilance": 0.6000000000000001,
+        "average_match": 0.9441495389541931
+      },
+      "perception": {
+        "categories": 2,
+        "events": 49,
+        "resonance_rate": 1.0,
+        "average_search_length": 1.0,
+        "average_vigilance": 0.9500000000000001,
+        "average_match": 0.9999999996295225
+      },
+      "temporal": {
+        "categories": 12,
+        "events": 45,
+        "resonance_rate": 1.0,
+        "average_search_length": 1.0,
+        "average_vigilance": 0.6000000000000002,
+        "average_match": 0.6254050365705084
+      },
+      "value": {
+        "categories": 12,
+        "events": 49,
+        "resonance_rate": 1.0,
+        "average_search_length": 1.9183673469387754,
+        "average_vigilance": 0.6253014270446273,
+        "average_match": 0.7790671737372573
+      }
+    },
+    "projections": {
+      "action->temporal": {
+        "events": 16,
+        "average_update_norm": 0.01845924898659175,
+        "total_update_norm": 0.295347983785468
+      },
+      "expectation->action": {
+        "events": 16,
+        "average_update_norm": 0.01588212190941951,
+        "total_update_norm": 0.2541139505507122
+      },
+      "goal->action": {
+        "events": 16,
+        "average_update_norm": 0.04362346979964487,
+        "total_update_norm": 0.6979755167943179
+      },
+      "goal->perception": {
+        "events": 16,
+        "average_update_norm": 0.00804843496885586,
+        "total_update_norm": 0.12877495950169376
+      },
+      "perception->temporal": {
+        "events": 16,
+        "average_update_norm": 0.040362493597322094,
+        "total_update_norm": 0.6457998975571535
+      },
+      "perception->value": {
+        "events": 16,
+        "average_update_norm": 0.033535284972910376,
+        "total_update_norm": 0.536564559566566
+      },
+      "temporal->perception": {
+        "events": 16,
+        "average_update_norm": 0.00488821651256819,
+        "total_update_norm": 0.07821146420109104
+      },
+      "value->perception": {
+        "events": 16,
+        "average_update_norm": 0.0049957566564382315,
+        "total_update_norm": 0.0799321065030117
+      }
+    },
+    "action_distribution": {
+      "1": 16
+    },
+    "reward_mean": 0.011617594087074416,
+    "reward_trend": 0.006409111050027129,
+    "temporal_mismatch_mean": 0.36090608687350273,
+    "temporal_mismatch_trend": 0.05960401723432368,
+    "imagination_acceptance_rate": 0.75
+  }
+}

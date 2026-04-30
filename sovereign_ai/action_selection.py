@@ -212,7 +212,7 @@ class ARTActionField(ARTField):
                 f"{result.category_index} action={action_index} prediction_error={reward_prediction_error:.3f}"
             )
 
-    def slot_action_bias(self, slots: np.ndarray, category_activation: np.ndarray) -> np.ndarray:
+    def slot_action_bias(self, category_activation: np.ndarray) -> np.ndarray:
         if len(self.action_associations) == 0:
             return np.zeros(self.action_count, dtype=float)
         schema_bias = self._resize_activation(category_activation)

@@ -7,6 +7,7 @@ from sovereign_ai.goal_system import ARTGoalField, GoalSystem
 from sovereign_ai.imagination import ARTExpectationField
 from sovereign_ai.perception import ARTPerception, ARTPerceptualField, PerceptionResult
 from sovereign_ai.temporal_state import TemporalState
+from sovereign_ai.tracing import BehaviorTrace, FieldTrace, ProjectionTrace, TraceRecorder
 from sovereign_ai.transition_model import ARTTemporalField, LinearTransitionModel
 from sovereign_ai.vigilance import VigilanceController
 
@@ -20,10 +21,14 @@ __all__ = [
     "ARTTemporalField",
     "ARTValueField",
     "AssociativeProjection",
+    "BehaviorTrace",
     "CognitiveArchitecture",
+    "FieldTrace",
     "GoalSystem",
     "LinearTransitionModel",
     "PerceptionResult",
+    "ProjectionTrace",
     "TemporalState",
+    "TraceRecorder",
     "VigilanceController",
 ]

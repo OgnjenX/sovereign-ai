@@ -15,6 +15,7 @@ from sovereign_ai.perception import ARTPerceptualField, PerceptionResult
 from sovereign_ai.goal_system import ARTGoalField
 from sovereign_ai.spatial import SpatialModule
 from sovereign_ai.temporal_state import TemporalState
+from sovereign_ai.tracing import TraceRecorder
 from sovereign_ai.transition_model import ARTTemporalField
 from sovereign_ai.utils import compact_vector, normalize, softmax
 from sovereign_ai.vigilance import VigilanceController
@@ -50,8 +51,11 @@ class CognitiveArchitecture:
         debug: bool = False,
         convergence_iterations: int = 7,
         convergence_tolerance: float = 0.025,
+        trace_recorder: TraceRecorder | None = None,
     ) -> None:
         self.debug = debug
+        self.trace_recorder = trace_recorder
+        self.current_step = 0
         self.memory = Memory(input_dim)
         self.perception: ARTPerceptualField = ARTPerceptualField(
             input_dim,
@@ -134,7 +138,7 @@ class CognitiveArchitecture:
         value: float,
         salience: np.ndarray,
     ) -> int:
-        value_state = self.value_system.update_state(
+        value_state = self.value_system.resonate_value(
             perception.category_activation,
             reward=value,
             novelty=perception.novelty,
@@ -157,7 +161,6 @@ class CognitiveArchitecture:
         x: np.ndarray,
         reward: float,
         salience: np.ndarray,
-        urgency: float,
     ) -> tuple[PerceptionResult, float, ActionResult, np.ndarray, float]:
         seeded_perception = self.perception.process(x)
         temporal_state = TemporalState.from_present(x)
@@ -229,7 +232,7 @@ class CognitiveArchitecture:
                 category_activation,
             )
             value_mismatch = 1.0 - max(self.value_system.last_result.resonance_trace) if self.value_system.last_result else 0.0
-            value_state = self.value_system.update_state(
+            value_state = self.value_system.resonate_value(
                 category_activation,
                 reward=reward,
                 novelty=perception_state.result.novelty,
@@ -295,6 +298,16 @@ class CognitiveArchitecture:
                     f"oscillation={oscillating} "
                     f"slot_norms={np.round(np.linalg.norm(compositional_slots, axis=1), 3).tolist()}"
                 )
+            self._record_iteration_traces(
+                step=self.current_step,
+                iteration=iteration,
+                perception_change=perception_state.change,
+                value_change=value_state.change,
+                action_change=action_change,
+                goal_change=0.0,
+                temporal_change=present_change,
+                expectation_change=0.0,
+            )
             if total_change < self.convergence_tolerance:
                 break
 
@@ -415,13 +428,13 @@ class CognitiveArchitecture:
         self.memory.bind_ltm(self.perception.prototypes)
 
     def step(self, env: GridWorld, step_index: int) -> None:
+        self.current_step = int(step_index)
         x = self.observe_environment(env)
         self.memory.update_stm(x)
         perception, value, action_state, effective_input, future_alignment = self.converge_states(
             x,
             self.previous_reward,
             env.salience(),
-            env.urgency(),
         )
         action = action_state.action_index
         previous_position = env.position.copy()
@@ -464,6 +477,13 @@ class CognitiveArchitecture:
         self.imagination.learn_expectation(effective_input)
         self._learn_projections()
         self._learn_vigilance(reward)
+        self._record_step_trace(
+            step=int(step_index),
+            action=action,
+            reward=reward,
+            value=value,
+            goal_alignment=goal_update.alignment,
+        )
         if self.learning_condition(perception, reward):
             self.update_weights(perception, effective_input)
 
@@ -482,7 +502,15 @@ class CognitiveArchitecture:
 
     def _learn_projections(self) -> None:
         for projection in self.projections.values():
-            projection.learn()
+            trace = projection.learn()
+            if self.trace_recorder is not None:
+                self.trace_recorder.record_projection(
+                    trace.name,
+                    self.current_step,
+                    trace.update_norm,
+                    trace.source_size,
+                    trace.target_size,
+                )
 
     def _learn_vigilance(self, reward: float) -> None:
         fields = [
@@ -499,3 +527,74 @@ class CognitiveArchitecture:
             if field.last_result is not None and field.last_result.resonance_trace:
                 mismatch = 1.0 - max(field.last_result.resonance_trace)
             self.vigilance_controller.learn(name, activation, mismatch, reward)
+
+    def _record_iteration_traces(
+        self,
+        step: int,
+        iteration: int,
+        perception_change: float,
+        value_change: float,
+        action_change: float,
+        goal_change: float,
+        temporal_change: float,
+        expectation_change: float,
+    ) -> None:
+        if self.trace_recorder is None:
+            return
+        fields = [
+            ("perception", self.perception, perception_change),
+            ("value", self.value_system, value_change),
+            ("goal", self.goal_system, goal_change),
+            ("action", self.action_selector, action_change),
+            ("temporal", self.transition_model, temporal_change),
+            ("expectation", self.imagination, expectation_change),
+        ]
+        for name, field, change in fields:
+            self._record_field_trace(name, field, step, iteration, change)
+
+    def _record_field_trace(self, name: str, field, step: int, iteration: int, change: float) -> None:
+        if self.trace_recorder is None or field.last_result is None:
+            return
+        result = field.last_result
+        match = max(result.resonance_trace) if result.resonance_trace else 0.0
+        self.trace_recorder.record_field(
+            field_name=name,
+            step=step,
+            iteration=iteration,
+            category_index=result.category_index,
+            resonance=result.resonance,
+            vigilance=result.effective_vigilance,
+            match=match,
+            search_path=result.search_path,
+            novelty=result.novelty,
+            change=change,
+            category_count=len(field.categories),
+        )
+
+    def _record_step_trace(
+        self,
+        step: int,
+        action: int,
+        reward: float,
+        value: float,
+        goal_alignment: float,
+    ) -> None:
+        if self.trace_recorder is None:
+            return
+        temporal_mismatch = (
+            self.transition_model.last_prediction.mismatch
+            if self.transition_model.last_prediction is not None
+            else 0.0
+        )
+        imagination_accepted = any(
+            bool(item.get("accepted", False)) for item in self.imagination.last_rollout.trace
+        )
+        self.trace_recorder.record_behavior(
+            step=step,
+            action=action,
+            reward=reward,
+            value=value,
+            goal_alignment=goal_alignment,
+            temporal_mismatch=temporal_mismatch,
+            imagination_accepted=imagination_accepted,
+        )

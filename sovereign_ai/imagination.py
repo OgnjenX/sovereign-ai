@@ -69,7 +69,6 @@ class ARTExpectationField(ARTField):
         horizon: int = 3,
     ) -> ImaginationRollout:
         self._sync_with_perception()
-        percept = np.asarray(current_percept, dtype=float)
         perceptual_bias = np.zeros(self.input_dim, dtype=float)
         action_bias = np.zeros(len(action_field.categories), dtype=float)
         value_bias = np.zeros(len(self.value_system.categories), dtype=float)
@@ -78,66 +77,29 @@ class ARTExpectationField(ARTField):
         action_activation = np.zeros(max(1, len(action_field.categories)), dtype=float)
 
         for step in range(horizon):
-            temporal_prediction = temporal_field.predict_categories(
+            (
+                step_perceptual_bias,
+                step_action_bias,
+                step_value_bias,
+                step_trace,
                 percept_activation,
                 action_activation,
+                accepted,
+            ) = self._rollout_step(
                 percept_activation,
-                value_activation,
-            )
-            candidate_activation = temporal_prediction.perceptual_bias
-            if np.sum(candidate_activation) <= 1e-9 and len(self.perception.categories):
-                candidate_activation = self._next_activation(percept_activation, len(self.perception.categories))
-            candidate_state = self.perception.reconstruct(candidate_activation)
-            expectation = self.process(candidate_state, category_bias=candidate_activation, learn=False)
-            perceptual_test = self.perception.update_state_with_imagination(
-                np.zeros(self.input_dim, dtype=float),
-                imagined_input=expectation.top_down_match,
-                imagined_category_bias=expectation.category_activation,
-                real_input_weight=0.0,
-            )
-            accepted = expectation.resonance and perceptual_test.result.resonance and not temporal_prediction.reset
-            action_context = action_field.schema_input(
-                perceptual_test.result.category_activation,
+                action_activation,
                 goal_activation,
                 value_activation,
-                temporal_prediction.action_bias,
-                np.empty(0),
+                temporal_field,
+                action_field,
+                step,
             )
-            action_state = action_field.resonate_action(
-                action_context,
-                category_bias=self._fit(temporal_prediction.action_bias, len(action_field.categories)),
-                exploratory_signal=temporal_prediction.action_bias,
-                pathway="imagined",
-            )
-            value_state = self.value_system.update_state(
-                perceptual_test.result.category_activation,
-                reward=0.0,
-                novelty=perceptual_test.result.novelty,
-                context=temporal_prediction.confidence,
-                goal_alignment=float(np.max(goal_activation)) if len(goal_activation) else 0.0,
-                action_distribution=action_state.result.action_distribution,
-                previous_state=value_activation,
-                learn=False,
-            )
-            if accepted and action_state.result.action_distribution.size:
-                perceptual_bias += perceptual_test.result.top_down_match
-                action_bias = self._accumulate(action_bias, action_state.result.action_distribution, len(action_bias))
-                value_bias = self._accumulate(value_bias, value_state.activation, len(value_bias))
-            trace.append(
-                {
-                    "step": step,
-                    "expectation_resonance": expectation.resonance,
-                    "perception_resonance": perceptual_test.result.resonance,
-                    "action": action_state.result.action_index,
-                    "temporal_mismatch": temporal_prediction.mismatch,
-                    "accepted": accepted,
-                    "search": expectation.search_path,
-                }
-            )
+            perceptual_bias += step_perceptual_bias
+            action_bias = self._accumulate(action_bias, step_action_bias, len(action_bias))
+            value_bias = self._accumulate(value_bias, step_value_bias, len(value_bias))
+            trace.append(step_trace)
             if not accepted:
                 break
-            percept_activation = perceptual_test.result.category_activation
-            action_activation = self._fit(action_state.result.action_distribution, len(action_field.categories))
 
         if np.sum(perceptual_bias) > 1e-9:
             perceptual_bias = perceptual_bias / np.max(perceptual_bias)
@@ -149,6 +111,83 @@ class ARTExpectationField(ARTField):
         if self.debug:
             print(f"[expectation-rollout] trace={trace}")
         return self.last_rollout
+
+    def _rollout_step(
+        self,
+        percept_activation: np.ndarray,
+        action_activation: np.ndarray,
+        goal_activation: np.ndarray,
+        value_activation: np.ndarray,
+        temporal_field: ARTTemporalField,
+        action_field: ARTActionField,
+        step: int,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, object], np.ndarray, np.ndarray, bool]:
+        temporal_prediction = temporal_field.predict_categories(
+            percept_activation,
+            action_activation,
+            percept_activation,
+            value_activation,
+        )
+        candidate_activation = temporal_prediction.perceptual_bias
+        if np.sum(candidate_activation) <= 1e-9 and len(self.perception.categories):
+            candidate_activation = self._next_activation(percept_activation, len(self.perception.categories))
+        candidate_state = self.perception.reconstruct(candidate_activation)
+        expectation = self.process(candidate_state, category_bias=candidate_activation, learn=False)
+        perceptual_test = self.perception.update_state_with_imagination(
+            np.zeros(self.input_dim, dtype=float),
+            imagined_input=expectation.top_down_match,
+            imagined_category_bias=expectation.category_activation,
+            real_input_weight=0.0,
+        )
+        accepted = expectation.resonance and perceptual_test.result.resonance and not temporal_prediction.reset
+        action_context = action_field.schema_input(
+            perceptual_test.result.category_activation,
+            goal_activation,
+            value_activation,
+            temporal_prediction.action_bias,
+            np.empty(0),
+        )
+        action_state = action_field.resonate_action(
+            action_context,
+            category_bias=self._fit(temporal_prediction.action_bias, len(action_field.categories)),
+            exploratory_signal=temporal_prediction.action_bias,
+            pathway="imagined",
+        )
+        value_state = self.value_system.resonate_value(
+            perceptual_test.result.category_activation,
+            reward=0.0,
+            novelty=perceptual_test.result.novelty,
+            context=temporal_prediction.confidence,
+            goal_alignment=float(np.max(goal_activation)) if len(goal_activation) else 0.0,
+            action_distribution=action_state.result.action_distribution,
+            previous_state=value_activation,
+            learn=False,
+        )
+        perceptual_bias = np.zeros(self.input_dim, dtype=float)
+        action_bias = np.zeros(len(action_field.categories), dtype=float)
+        value_bias = np.zeros(len(self.value_system.categories), dtype=float)
+        if accepted and action_state.result.action_distribution.size:
+            perceptual_bias += perceptual_test.result.top_down_match
+            action_bias = self._accumulate(action_bias, action_state.result.action_distribution, len(action_bias))
+            value_bias = self._accumulate(value_bias, value_state.activation, len(value_bias))
+        trace = {
+            "step": step,
+            "expectation_resonance": expectation.resonance,
+            "perception_resonance": perceptual_test.result.resonance,
+            "action": action_state.result.action_index,
+            "temporal_mismatch": temporal_prediction.mismatch,
+            "accepted": accepted,
+            "search": expectation.search_path,
+        }
+        return (
+            perceptual_bias,
+            action_bias,
+            value_bias,
+            trace,
+            perceptual_test.result.category_activation,
+            self._fit(action_state.result.action_distribution, len(action_field.categories)),
+            accepted,
+        )
 
     def sample_candidates(
         self,
