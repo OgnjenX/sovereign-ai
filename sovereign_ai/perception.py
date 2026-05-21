@@ -1,10 +1,12 @@
+"""Perceptual ART field abstractions and compatibility wrappers."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
 
 import numpy as np
 
-from sovereign_ai.art_field import ARTField, ARTFieldResult, ARTFieldState
+from sovereign_ai.art_field import ARTField, ARTFieldResult
 
 
 @dataclass(frozen=True)
@@ -14,6 +16,8 @@ class PerceptionResult(ARTFieldResult):
 
 @dataclass(frozen=True)
 class PerceptionState:
+    """Container for one coupled perception update step."""
+
     result: PerceptionResult
     effective_input: np.ndarray
     change: float
@@ -66,25 +70,6 @@ class ARTPerceptualField(ARTField):
             )
         )
 
-    def update_state(
-        self,
-        x: np.ndarray,
-        *,
-        previous_activation: np.ndarray | None = None,
-        top_down_bias: np.ndarray | None = None,
-        category_bias: np.ndarray | None = None,
-        vigilance_modulation: float = 0.0,
-        learn: bool = False,
-    ) -> ARTFieldState:
-        return super().update_state(
-            x,
-            previous_activation=previous_activation,
-            top_down_bias=top_down_bias,
-            category_bias=category_bias,
-            vigilance_modulation=vigilance_modulation,
-            learn=learn,
-        )
-
     def update_state_with_imagination(
         self,
         x: np.ndarray,
@@ -97,10 +82,16 @@ class ARTPerceptualField(ARTField):
         vigilance_modulation: float = 0.0,
         learn: bool = False,
     ) -> PerceptionState:
+        """Blend sensory and imagined input before running one state update."""
+
         x = np.asarray(x, dtype=float)
         if imagined_input is not None:
             imagined = np.asarray(imagined_input, dtype=float)
-            effective_input = np.clip(real_input_weight * x + (1.0 - real_input_weight) * imagined, 0.0, 1.0)
+            effective_input = np.clip(
+                real_input_weight * x + (1.0 - real_input_weight) * imagined,
+                0.0,
+                1.0,
+            )
         else:
             effective_input = x
 
@@ -112,13 +103,19 @@ class ARTPerceptualField(ARTField):
             vigilance_modulation=vigilance_modulation,
             learn=learn,
         )
-        return PerceptionState(self._to_perception_result(base_state.result), base_state.effective_input, base_state.change)
+        return PerceptionState(
+            self._to_perception_result(base_state.result),
+            base_state.effective_input,
+            base_state.change,
+        )
 
     def compose_activation(
         self,
         category_activation: np.ndarray,
         slot_count: int = 2,
     ) -> tuple[np.ndarray, np.ndarray]:
+        """Compose sparse activation slots from the strongest active categories."""
+
         activation = self._resize_activation(category_activation)
         if len(activation) == 0:
             return activation, np.empty((0, self.input_dim), dtype=float)
@@ -152,5 +149,3 @@ class ARTPerceptualField(ARTField):
 
 class ARTPerception(ARTPerceptualField):
     """Compatibility wrapper preserving the historical perception class name."""
-
-    pass

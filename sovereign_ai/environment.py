@@ -1,3 +1,5 @@
+"""Simple 2D grid-world environment for architecture rollouts."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -24,13 +26,19 @@ class GridWorld:
 
     @property
     def action_count(self) -> int:
+        """Number of discrete actions supported by the environment."""
+
         return len(self.action_effects)
 
     @property
     def observation_dim(self) -> int:
+        """Length of the continuous observation vector."""
+
         return 8
 
     def observe(self) -> np.ndarray:
+        """Return normalized observation containing position and deltas."""
+
         pos = self.position / max(1, self.size - 1)
         goal_delta = (self.goal - self.position) / max(1, self.size - 1)
         hazard_delta = (self.hazard - self.position) / max(1, self.size - 1)
@@ -39,6 +47,8 @@ class GridWorld:
         return np.clip((x + 1.0) / 2.0, 0.0, 1.0)
 
     def salience(self) -> np.ndarray:
+        """Compute action salience bias toward the current goal."""
+
         projected = self.action_effects @ (self.goal - self.position)
         salience = projected.astype(float)
         salience -= np.mean(salience)
@@ -46,10 +56,14 @@ class GridWorld:
         return 0.18 * salience / denom
 
     def urgency(self) -> float:
+        """Estimate urgency based on proximity to hazard."""
+
         distance_to_hazard = np.linalg.norm(self.position - self.hazard)
         return float(np.exp(-distance_to_hazard))
 
     def step(self, action_index: int) -> float:
+        """Apply action, update position, and return immediate reward."""
+
         self.position = np.clip(
             self.position + self.action_effects[action_index],
             0,

@@ -1,3 +1,5 @@
+"""Learning gate and prototype update helpers for ART fields."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -7,6 +9,8 @@ import numpy as np
 
 @dataclass(frozen=True)
 class LearningDecision:
+    """Decision output for whether learning updates are allowed."""
+
     allowed: bool
     reason: str
 
@@ -18,17 +22,17 @@ class GatedLearning:
         self,
         learning_rate: float = 0.18,
         intersection_rate: float = 0.75,
-        reward_threshold: float = 0.1,
-        novelty_threshold: float = 0.35,
-        debug: bool = False,
+        **gate_options: float | bool,
     ) -> None:
         self.learning_rate = learning_rate
         self.intersection_rate = intersection_rate
-        self.reward_threshold = reward_threshold
-        self.novelty_threshold = novelty_threshold
-        self.debug = debug
+        self.reward_threshold = float(gate_options.get("reward_threshold", 0.1))
+        self.novelty_threshold = float(gate_options.get("novelty_threshold", 0.35))
+        self.debug = bool(gate_options.get("debug", False))
 
     def gate(self, resonance: bool, reward: float, novelty: float) -> LearningDecision:
+        """Return learning decision from resonance, reward, and novelty signals."""
+
         signals = np.array(
             [
                 float(resonance),
@@ -43,9 +47,13 @@ class GatedLearning:
         return LearningDecision(allowed, reason)
 
     def update(self, prototypes: np.ndarray, category_index: int, x: np.ndarray) -> None:
+        """Apply hybrid intersection-average update to one prototype."""
+
         before = prototypes[category_index].copy()
         intersection = np.minimum(prototypes[category_index], x)
-        average = prototypes[category_index] + self.learning_rate * (x - prototypes[category_index])
+        average = prototypes[category_index] + self.learning_rate * (
+            x - prototypes[category_index]
+        )
         prototypes[category_index] = (
             self.intersection_rate * intersection + (1.0 - self.intersection_rate) * average
         )

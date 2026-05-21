@@ -1,3 +1,5 @@
+"""Goal-state ART field and compatibility wrapper."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -10,11 +12,21 @@ from sovereign_ai.utils import normalize
 
 @dataclass(frozen=True)
 class GoalState:
+    """Snapshot of the current goal representation and alignment metrics."""
+
     active_goal: np.ndarray
     goal_activation: np.ndarray
     alignment: float
     resonance: bool = True
     search_path: list[int] | None = None
+
+
+@dataclass(frozen=True)
+class GoalUpdateContext:
+    """Optional context values used when updating goal activations."""
+
+    future_alignment: float = 0.0
+    vigilance_modulation: float = 0.0
 
 
 class ARTGoalField(ARTField):
@@ -25,9 +37,10 @@ class ARTGoalField(ARTField):
         input_dim: int,
         goal_count: int = 3,
         update_rate: float = 0.04,
-        seed: int | None = None,
-        debug: bool = False,
+        **field_options: int | bool | None,
     ) -> None:
+        seed = field_options.get("seed")
+        debug = bool(field_options.get("debug", False))
         super().__init__(
             input_dim=input_dim,
             max_categories=goal_count,
@@ -48,17 +61,19 @@ class ARTGoalField(ARTField):
         state: np.ndarray,
         reward: float,
         novelty: float,
-        future_alignment: float = 0.0,
-        vigilance_modulation: float = 0.0,
+        context: GoalUpdateContext | None = None,
     ) -> GoalState:
+        """Update goal activations and return the resulting goal state."""
+
+        update_context = context or GoalUpdateContext()
         category_bias = np.zeros(len(self.categories), dtype=float)
-        if reward > 0.0 or future_alignment > 0.0:
+        if reward > 0.0 or update_context.future_alignment > 0.0:
             category_bias += self.goal_activation
         field_state = super().update_state(
             state,
             previous_activation=self.goal_activation,
             category_bias=category_bias,
-            vigilance_modulation=vigilance_modulation,
+            vigilance_modulation=update_context.vigilance_modulation,
             learn=reward > 0.0 or novelty > 0.35,
         )
         self.goal_activation = field_state.result.category_activation
@@ -79,13 +94,19 @@ class ARTGoalField(ARTField):
         )
 
     def state(self, current_state: np.ndarray) -> GoalState:
+        """Compute goal state for the current input without learning."""
+
         result = self.process(current_state, category_bias=self.goal_activation, learn=False)
         active_goal = result.category_activation @ self.categories
         alignment = float(normalize(current_state) @ normalize(active_goal))
-        return GoalState(active_goal, result.category_activation, alignment, result.resonance, result.search_path)
+        return GoalState(
+            active_goal,
+            result.category_activation,
+            alignment,
+            result.resonance,
+            result.search_path,
+        )
 
 
 class GoalSystem(ARTGoalField):
     """Compatibility wrapper preserving the old goal-system constructor."""
-
-    pass

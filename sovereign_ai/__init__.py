@@ -1,3 +1,5 @@
+"""Public package exports for the sovereign-ai project."""
+
 from sovereign_ai.architecture import CognitiveArchitecture
 from sovereign_ai.action_selection import ARTActionField
 from sovereign_ai.associative_coupling import AssociativeProjection

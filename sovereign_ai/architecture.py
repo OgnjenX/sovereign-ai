@@ -1,3 +1,5 @@
+"""Core orchestration loop wiring the coupled ART subsystems together."""
+
 from __future__ import annotations
 
 import itertools
@@ -12,12 +14,18 @@ from sovereign_ai.imagination import ARTExpectationField
 from sovereign_ai.learning import GatedLearning
 from sovereign_ai.memory import Memory
 from sovereign_ai.perception import ARTPerceptualField, PerceptionResult
-from sovereign_ai.goal_system import ARTGoalField
+from sovereign_ai.goal_system import ARTGoalField, GoalUpdateContext
 from sovereign_ai.spatial import SpatialModule
 from sovereign_ai.temporal_state import TemporalState
-from sovereign_ai.tracing import TraceRecorder
+from sovereign_ai.tracing import (
+    BehaviorTrace,
+    FieldMetrics,
+    FieldTrace,
+    ProjectionTrace,
+    TraceRecorder,
+)
 from sovereign_ai.transition_model import ARTTemporalField
-from sovereign_ai.utils import compact_vector, normalize, softmax
+from sovereign_ai.utils import compact_vector, normalize
 from sovereign_ai.vigilance import VigilanceController
 
 
@@ -85,7 +93,9 @@ class CognitiveArchitecture:
         )
         self.previous_reward = 0.0
         self.previous_prediction_error = 0.0
-        self.spatial = SpatialModule(motion_dim=2, seed=None if seed is None else seed + 4)
+        self.spatial = SpatialModule(
+            motion_dim=2, seed=None if seed is None else seed + 4
+        )
         self.spatial_context = np.zeros(6, dtype=float)
         self.goal_system = ARTGoalField(
             input_dim,
@@ -103,14 +113,42 @@ class CognitiveArchitecture:
             debug=debug,
         )
         self.projections = {
-            "perception_value": AssociativeProjection(self.perception, self.value_system, "perception->value", debug=debug),
-            "value_perception": AssociativeProjection(self.value_system, self.perception, "value->perception", debug=debug),
-            "goal_perception": AssociativeProjection(self.goal_system, self.perception, "goal->perception", debug=debug),
-            "goal_action": AssociativeProjection(self.goal_system, self.action_selector, "goal->action", debug=debug),
-            "temporal_perception": AssociativeProjection(self.transition_model, self.perception, "temporal->perception", debug=debug),
-            "expectation_action": AssociativeProjection(self.imagination, self.action_selector, "expectation->action", debug=debug),
-            "perception_temporal": AssociativeProjection(self.perception, self.transition_model, "perception->temporal", debug=debug),
-            "action_temporal": AssociativeProjection(self.action_selector, self.transition_model, "action->temporal", debug=debug),
+            "perception_value": AssociativeProjection(
+                self.perception, self.value_system, "perception->value", debug=debug
+            ),
+            "value_perception": AssociativeProjection(
+                self.value_system, self.perception, "value->perception", debug=debug
+            ),
+            "goal_perception": AssociativeProjection(
+                self.goal_system, self.perception, "goal->perception", debug=debug
+            ),
+            "goal_action": AssociativeProjection(
+                self.goal_system, self.action_selector, "goal->action", debug=debug
+            ),
+            "temporal_perception": AssociativeProjection(
+                self.transition_model,
+                self.perception,
+                "temporal->perception",
+                debug=debug,
+            ),
+            "expectation_action": AssociativeProjection(
+                self.imagination,
+                self.action_selector,
+                "expectation->action",
+                debug=debug,
+            ),
+            "perception_temporal": AssociativeProjection(
+                self.perception,
+                self.transition_model,
+                "perception->temporal",
+                debug=debug,
+            ),
+            "action_temporal": AssociativeProjection(
+                self.action_selector,
+                self.transition_model,
+                "action->temporal",
+                debug=debug,
+            ),
         }
         self.convergence_iterations = convergence_iterations
         self.convergence_tolerance = convergence_tolerance
@@ -118,9 +156,13 @@ class CognitiveArchitecture:
         self.action_count = action_count
 
     def observe_environment(self, env: GridWorld) -> np.ndarray:
+        """Read the current environment observation vector."""
+
         return env.observe()
 
     def evaluate(self, perception: PerceptionResult, reward: float) -> float:
+        """Evaluate the current perceptual state against reward and context."""
+
         result = self.value_system.evaluate(
             perception.category_activation,
             reward=reward,
@@ -138,13 +180,17 @@ class CognitiveArchitecture:
         value: float,
         salience: np.ndarray,
     ) -> int:
+        """Select an action using coupled value, goal, and salience signals."""
+
         value_state = self.value_system.resonate_value(
             perception.category_activation,
             reward=value,
             novelty=perception.novelty,
             context=self.memory.sequence_context(),
             goal_alignment=self.goal_system.state(x).alignment,
-            action_distribution=np.full(self.action_count, 1.0 / self.action_count, dtype=float),
+            action_distribution=np.full(
+                self.action_count, 1.0 / self.action_count, dtype=float
+            ),
             learn=False,
         )
         action_context = self.action_selector.schema_input(
@@ -154,7 +200,9 @@ class CognitiveArchitecture:
             np.empty(0),
             np.empty(0),
         )
-        return self.action_selector.resonate_action(action_context, exploratory_signal=salience, pathway="art").result.action_index
+        return self.action_selector.resonate_action(
+            action_context, exploratory_signal=salience, pathway="art"
+        ).result.action_index
 
     def converge_states(
         self,
@@ -162,6 +210,8 @@ class CognitiveArchitecture:
         reward: float,
         salience: np.ndarray,
     ) -> tuple[PerceptionResult, float, ActionResult, np.ndarray, float]:
+        """Iteratively settle perception, value, action, and temporal states."""
+
         seeded_perception = self.perception.process(x)
         temporal_state = TemporalState.from_present(x)
         perception_state = self.perception.update_state_with_imagination(
@@ -169,7 +219,9 @@ class CognitiveArchitecture:
             previous_activation=seeded_perception.category_activation,
         )
         category_activation = perception_state.result.category_activation
-        action_distribution = np.ones(self.action_count, dtype=float) / self.action_count
+        action_distribution = (
+            np.ones(self.action_count, dtype=float) / self.action_count
+        )
         value_activation = np.empty(0, dtype=float)
         effective_input = x.copy()
         value_scalar = 0.0
@@ -180,7 +232,9 @@ class CognitiveArchitecture:
 
         for iteration in range(self.convergence_iterations):
             temporal_imagined = temporal_state.imagined_input()
-            transition_uncertainty = float(action_distribution @ self.transition_model.uncertainty)
+            transition_uncertainty = float(
+                action_distribution @ self.transition_model.uncertainty
+            )
             goal_state = self.goal_system.state(effective_input)
             rollout = self.imagination.prospective_rollout(
                 category_activation,
@@ -189,21 +243,31 @@ class CognitiveArchitecture:
                 self.transition_model,
                 self.action_selector,
             )
-            value_bias = self.projections["perception_value"].project(category_activation)
+            value_bias = self.projections["perception_value"].project(
+                category_activation
+            )
             perception_bias = self._projection_bias(
                 self.projections["value_perception"].project(value_activation),
                 self.projections["goal_perception"].project(goal_state.goal_activation),
-                self.projections["temporal_perception"].project(self._field_activation(self.transition_model)),
+                self.projections["temporal_perception"].project(
+                    self._field_activation(self.transition_model)
+                ),
                 self._fit(rollout.value_category_bias, len(self.perception.categories)),
             )
             top_down_bias = self._projection_expectation(
-                self.projections["goal_perception"].top_down(goal_state.goal_activation),
+                self.projections["goal_perception"].top_down(
+                    goal_state.goal_activation
+                ),
                 self.projections["value_perception"].top_down(value_activation),
-                self.projections["temporal_perception"].top_down(self._field_activation(self.transition_model)),
+                self.projections["temporal_perception"].top_down(
+                    self._field_activation(self.transition_model)
+                ),
                 rollout.perceptual_bias,
                 temporal_imagined,
             )
-            perception_mismatch = 1.0 - max(perception_state.result.resonance_trace or [0.0])
+            perception_mismatch = 1.0 - max(
+                perception_state.result.resonance_trace or [0.0]
+            )
             perception_vigilance = self.vigilance_controller.modulation(
                 "perception",
                 category_activation,
@@ -219,25 +283,35 @@ class CognitiveArchitecture:
                 real_input_weight=1.0,
                 vigilance_modulation=perception_vigilance,
             )
-            category_activation, compositional_slots = self.perception.compose_activation(
-                perception_state.result.category_activation
+            category_activation, compositional_slots = (
+                self.perception.compose_activation(
+                    perception_state.result.category_activation
+                )
             )
             effective_input = perception_state.effective_input
             previous_present = temporal_state.present.copy()
             temporal_state.present = normalize(effective_input)
-            present_change = float(np.linalg.norm(temporal_state.present - previous_present))
+            present_change = float(
+                np.linalg.norm(temporal_state.present - previous_present)
+            )
             goal_state = self.goal_system.state(effective_input)
             future_value, future_alignment = self._evaluate_future_state(
                 temporal_state.future_1,
                 category_activation,
             )
-            value_mismatch = 1.0 - max(self.value_system.last_result.resonance_trace) if self.value_system.last_result else 0.0
+            value_mismatch = (
+                1.0 - max(self.value_system.last_result.resonance_trace)
+                if self.value_system.last_result
+                else 0.0
+            )
             value_state = self.value_system.resonate_value(
                 category_activation,
                 reward=reward,
                 novelty=perception_state.result.novelty,
                 context=self.memory.sequence_context(),
-                goal_alignment=float(np.clip(max(goal_state.alignment, future_alignment), -1.0, 1.0)),
+                goal_alignment=float(
+                    np.clip(max(goal_state.alignment, future_alignment), -1.0, 1.0)
+                ),
                 action_distribution=action_distribution,
                 previous_state=value_activation,
                 category_bias=value_bias,
@@ -261,8 +335,12 @@ class CognitiveArchitecture:
             )
             action_category_bias = self._projection_bias(
                 self.projections["goal_action"].project(goal_state.goal_activation),
-                self.projections["expectation_action"].project(self._field_activation(self.imagination)),
-                self._fit(rollout.action_category_bias, len(self.action_selector.categories)),
+                self.projections["expectation_action"].project(
+                    self._field_activation(self.imagination)
+                ),
+                self._fit(
+                    rollout.action_category_bias, len(self.action_selector.categories)
+                ),
             )
             action_state = self.action_selector.resonate_action(
                 action_context,
@@ -270,7 +348,11 @@ class CognitiveArchitecture:
                 vigilance_modulation=self.vigilance_controller.modulation(
                     "action",
                     self._field_activation(self.action_selector),
-                    mismatch=0.0 if self.action_selector.last_result is None else 1.0 - max(self.action_selector.last_result.resonance_trace),
+                    mismatch=(
+                        0.0
+                        if self.action_selector.last_result is None
+                        else 1.0 - max(self.action_selector.last_result.resonance_trace)
+                    ),
                     reward=reward,
                 ),
                 exploratory_signal=salience,
@@ -279,11 +361,26 @@ class CognitiveArchitecture:
             action_distribution = action_state.result.action_distribution
             action_result = action_state.result
             temporal_state.unfold(self.transition_model, action_distribution)
-            previous = previous_action_distribution / (np.sum(previous_action_distribution) + 1e-9)
-            action_change = float(np.linalg.norm(action_distribution - previous) + action_state.change)
-            total_change = perception_state.change + value_state.change + action_change + present_change
-            oscillating = previous_total_change is not None and total_change > previous_total_change * 1.25
+            previous = previous_action_distribution / (
+                np.sum(previous_action_distribution) + 1e-9
+            )
+            action_change = float(
+                np.linalg.norm(action_distribution - previous) + action_state.change
+            )
+            total_change = (
+                perception_state.change
+                + value_state.change
+                + action_change
+                + present_change
+            )
+            oscillating = (
+                previous_total_change is not None
+                and total_change > previous_total_change * 1.25
+            )
             previous_total_change = total_change
+            slot_norms = np.round(
+                np.linalg.norm(compositional_slots, axis=1), 3
+            ).tolist()
             if self.debug:
                 print(
                     "[convergence] iter="
@@ -293,10 +390,12 @@ class CognitiveArchitecture:
                     f"present_change={present_change:.4f} unfold=post_action "
                     f"top_down_norm={np.linalg.norm(top_down_bias):.3f} "
                     f"goal_alignment={goal_state.alignment:.3f} "
-                    f"future_alignment={future_alignment:.3f} future_value={future_value:.3f} "
-                    f"perception_vigilance={perception_vigilance:.3f} transition_uncertainty={transition_uncertainty:.3f} "
+                    f"future_alignment={future_alignment:.3f} "
+                    f"future_value={future_value:.3f} "
+                    f"perception_vigilance={perception_vigilance:.3f} "
+                    f"transition_uncertainty={transition_uncertainty:.3f} "
                     f"oscillation={oscillating} "
-                    f"slot_norms={np.round(np.linalg.norm(compositional_slots, axis=1), 3).tolist()}"
+                    f"slot_norms={slot_norms}"
                 )
             self._record_iteration_traces(
                 step=self.current_step,
@@ -318,18 +417,30 @@ class CognitiveArchitecture:
             reward=reward,
             novelty=perception_state.result.novelty,
             context=self.memory.sequence_context(),
-            goal_alignment=float(np.clip(self.goal_system.state(effective_input).alignment, -1.0, 1.0)),
+            goal_alignment=float(
+                np.clip(self.goal_system.state(effective_input).alignment, -1.0, 1.0)
+            ),
             learn=True,
         )
         self.previous_prediction_error = result.prediction_error
-        final_action_result: ActionResult = action_result if action_result is not None else self.action_selector.select(
-            category_activation,
-            value_scalar,
-            salience,
-            pathway="coupled",
+        final_action_result: ActionResult = (
+            action_result
+            if action_result is not None
+            else self.action_selector.select(
+                category_activation,
+                value_scalar,
+                salience,
+                pathway="coupled",
+            )
         )
         effective_input = np.asarray(effective_input, dtype=float)
-        return perception_state.result, result.value, final_action_result, effective_input, future_alignment
+        return (
+            perception_state.result,
+            result.value,
+            final_action_result,
+            effective_input,
+            future_alignment,
+        )
 
     def _evaluate_future_state(
         self,
@@ -371,7 +482,9 @@ class CognitiveArchitecture:
         return np.clip(expectation, 0.0, 1.0)
 
     def _projection_bias(self, *signals: np.ndarray) -> np.ndarray:
-        size = max((len(np.asarray(signal, dtype=float)) for signal in signals), default=0)
+        size = max(
+            (len(np.asarray(signal, dtype=float)) for signal in signals), default=0
+        )
         bias = np.zeros(size, dtype=float)
         for signal in signals:
             signal = np.asarray(signal, dtype=float)
@@ -396,7 +509,9 @@ class CognitiveArchitecture:
     def _urgency_signal(self, urgency: float, salience: np.ndarray) -> np.ndarray:
         salience = np.asarray(salience, dtype=float)
         signal = np.zeros(self.action_count, dtype=float)
-        signal[: min(self.action_count, len(salience))] = salience[: min(self.action_count, len(salience))]
+        signal[: min(self.action_count, len(salience))] = salience[
+            : min(self.action_count, len(salience))
+        ]
         if urgency > 0.0 and np.sum(signal) <= 1e-9:
             signal += urgency
         if np.sum(signal) <= 1e-9:
@@ -411,30 +526,42 @@ class CognitiveArchitecture:
             bias[(recent + 1) % action_count] += 0.04
         if len(self.spatial_context):
             spatial_bias = self.spatial_context[:action_count]
-            bias += 0.03 * (spatial_bias - np.mean(spatial_bias))
+            bias += (spatial_bias - np.mean(spatial_bias)) * 0.03
         return bias
 
     def execute(self, env: GridWorld, action: int) -> float:
+        """Apply one action to the environment and return reward."""
+
         return env.step(action)
 
     def learning_condition(self, perception: PerceptionResult, reward: float) -> bool:
+        """Check whether learning updates should be applied this step."""
+
         decision = self.learning.gate(perception.resonance, reward, perception.novelty)
         if self.debug:
-            print(f"[learning-gate] allowed={decision.allowed} reason={decision.reason}")
+            print(
+                f"[learning-gate] allowed={decision.allowed} reason={decision.reason}"
+            )
         return decision.allowed
 
     def update_weights(self, perception: PerceptionResult, x: np.ndarray) -> None:
+        """Update perceptual prototypes and memory bindings."""
+
         self.learning.update(self.perception.prototypes, perception.category_index, x)
         self.memory.bind_ltm(self.perception.prototypes)
 
     def step(self, env: GridWorld, step_index: int) -> None:
+        """Run one full perception-action-learning cycle."""
+
         self.current_step = int(step_index)
         x = self.observe_environment(env)
         self.memory.update_stm(x)
-        perception, value, action_state, effective_input, future_alignment = self.converge_states(
-            x,
-            self.previous_reward,
-            env.salience(),
+        perception, value, action_state, effective_input, future_alignment = (
+            self.converge_states(
+                x,
+                self.previous_reward,
+                env.salience(),
+            )
         )
         action = action_state.action_index
         previous_position = env.position.copy()
@@ -444,24 +571,25 @@ class CognitiveArchitecture:
             effective_input,
             reward,
             perception.novelty,
-            future_alignment=future_alignment,
-            vigilance_modulation=self.vigilance_controller.modulation(
-                "goal",
-                self._field_activation(self.goal_system),
-                mismatch=0.0 if self.goal_system.last_result is None else 1.0 - max(self.goal_system.last_result.resonance_trace),
-                reward=reward,
+            context=GoalUpdateContext(
+                future_alignment=future_alignment,
+                vigilance_modulation=self.vigilance_controller.modulation(
+                    "goal",
+                    self._field_activation(self.goal_system),
+                    mismatch=(
+                        0.0
+                        if self.goal_system.last_result is None
+                        else 1.0 - max(self.goal_system.last_result.resonance_trace)
+                    ),
+                    reward=reward,
+                ),
             ),
         )
         value_activation = self._field_activation(self.value_system)
-        action_activation = self._field_activation(self.action_selector)
         self.transition_model.learn(
             x,
             action_state.action_distribution,
             next_x,
-            previous_percept=perception.category_activation,
-            action_category=action_activation,
-            current_percept=self.perception.process(next_x).category_activation,
-            context=value_activation,
         )
         motion = (env.position - previous_position).astype(float) / max(1, env.size - 1)
         self.spatial_context = self.spatial.process(motion)
@@ -496,6 +624,8 @@ class CognitiveArchitecture:
         self.previous_reward = reward
 
     def run(self, env: GridWorld, steps: int | None = 32) -> None:
+        """Run repeated architecture steps for a bounded or unbounded horizon."""
+
         iterator = itertools.count() if steps is None else range(steps)
         for step_index in iterator:
             self.step(env, int(step_index))
@@ -505,11 +635,13 @@ class CognitiveArchitecture:
             trace = projection.learn()
             if self.trace_recorder is not None:
                 self.trace_recorder.record_projection(
-                    trace.name,
-                    self.current_step,
-                    trace.update_norm,
-                    trace.source_size,
-                    trace.target_size,
+                    ProjectionTrace(
+                        name=trace.name,
+                        step=self.current_step,
+                        update_norm=trace.update_norm,
+                        source_size=trace.source_size,
+                        target_size=trace.target_size,
+                    )
                 )
 
     def _learn_vigilance(self, reward: float) -> None:
@@ -552,22 +684,28 @@ class CognitiveArchitecture:
         for name, field, change in fields:
             self._record_field_trace(name, field, step, iteration, change)
 
-    def _record_field_trace(self, name: str, field, step: int, iteration: int, change: float) -> None:
+    def _record_field_trace(
+        self, name: str, field, step: int, iteration: int, change: float
+    ) -> None:
         if self.trace_recorder is None or field.last_result is None:
             return
         result = field.last_result
         match = max(result.resonance_trace) if result.resonance_trace else 0.0
         self.trace_recorder.record_field(
-            field_name=name,
-            step=step,
-            iteration=iteration,
-            category_index=result.category_index,
-            resonance=result.resonance,
-            vigilance=result.effective_vigilance,
-            match=match,
-            search_path=result.search_path,
-            novelty=result.novelty,
-            change=change,
+            FieldTrace(
+                field_name=name,
+                step=step,
+                iteration=iteration,
+                category_index=result.category_index,
+                metrics=FieldMetrics(
+                    resonance=result.resonance,
+                    vigilance=result.effective_vigilance,
+                    match=match,
+                    search_path=result.search_path,
+                    novelty=result.novelty,
+                    change=change,
+                ),
+            ),
             category_count=len(field.categories),
         )
 
@@ -587,14 +725,17 @@ class CognitiveArchitecture:
             else 0.0
         )
         imagination_accepted = any(
-            bool(item.get("accepted", False)) for item in self.imagination.last_rollout.trace
+            bool(item.get("accepted", False))
+            for item in self.imagination.last_rollout.trace
         )
         self.trace_recorder.record_behavior(
-            step=step,
-            action=action,
-            reward=reward,
-            value=value,
-            goal_alignment=goal_alignment,
-            temporal_mismatch=temporal_mismatch,
-            imagination_accepted=imagination_accepted,
+            BehaviorTrace(
+                step=step,
+                action=action,
+                reward=reward,
+                value=value,
+                goal_alignment=goal_alignment,
+                temporal_mismatch=temporal_mismatch,
+                imagination_accepted=imagination_accepted,
+            )
         )

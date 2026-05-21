@@ -1,3 +1,5 @@
+"""Reusable ART resonant field primitives shared across subsystems."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -9,6 +11,8 @@ from sovereign_ai.utils import cosine_similarity, normalize, softmax
 
 @dataclass(frozen=True)
 class ARTFieldResult:
+    """Outcome of one ART resonance and search cycle."""
+
     category_index: int
     category_activation: np.ndarray
     similarities: np.ndarray
@@ -22,6 +26,8 @@ class ARTFieldResult:
 
 @dataclass(frozen=True)
 class ARTFieldState:
+    """Result plus effective input and change for an ART update."""
+
     result: ARTFieldResult
     effective_input: np.ndarray
     change: float
@@ -70,10 +76,14 @@ class ARTField:
 
     @property
     def prototypes(self) -> np.ndarray:
+        """Return the learned prototype matrix."""
+
         return self.categories
 
     @prototypes.setter
     def prototypes(self, value: np.ndarray) -> None:
+        """Replace the learned prototype matrix."""
+
         self.categories = np.asarray(value, dtype=float)
 
     def process(
@@ -85,12 +95,26 @@ class ARTField:
         vigilance_modulation: float = 0.0,
         learn: bool = False,
     ) -> ARTFieldResult:
+        """Run category competition, resonance, and optional learning."""
+
         x = self._prepare_input(x, top_down_bias)
-        effective_vigilance = float(np.clip(self.vigilance + vigilance_modulation, 0.0, 1.0))
+        effective_vigilance = float(
+            np.clip(self.vigilance + vigilance_modulation, 0.0, 1.0)
+        )
         if self.categories.size == 0:
             self._add_category(x)
             activation = np.array([1.0])
-            result = ARTFieldResult(0, activation, np.array([1.0]), True, 1.0, [0], [1.0], x.copy(), effective_vigilance)
+            result = ARTFieldResult(
+                0,
+                activation,
+                np.array([1.0]),
+                True,
+                1.0,
+                [0],
+                [1.0],
+                x.copy(),
+                effective_vigilance,
+            )
             self.last_result = result
             return result
 
@@ -103,13 +127,22 @@ class ARTField:
             masked = np.where(available, category_drive, -np.inf)
             winner = int(np.argmax(masked))
             search_path.append(winner)
-            resonance, resonance_trace, top_down_match = self.resonance(x, winner, effective_vigilance)
+            resonance, resonance_trace, top_down_match = self.resonance(
+                x, winner, effective_vigilance
+            )
             if resonance:
                 activation = softmax(category_drive, self.competition_temperature)
                 novelty = float(max(0.0, 1.0 - np.max(similarities)))
                 if learn:
                     self.learn(winner, x)
-                self._log(winner, similarities, resonance, novelty, search_path, resonance_trace)
+                self._log(
+                    winner,
+                    similarities,
+                    resonance,
+                    novelty,
+                    search_path,
+                    resonance_trace,
+                )
                 result = ARTFieldResult(
                     winner,
                     activation,
@@ -139,9 +172,13 @@ class ARTField:
             winner = int(np.argmax(category_drive))
             activation = softmax(category_drive, self.competition_temperature)
             novelty = float(max(0.0, 1.0 - np.max(similarities)))
-            resonance, resonance_trace, top_down_match = self.resonance(x, winner, effective_vigilance)
+            resonance, resonance_trace, top_down_match = self.resonance(
+                x, winner, effective_vigilance
+            )
 
-        self._log(winner, similarities, resonance, novelty, search_path, resonance_trace)
+        self._log(
+            winner, similarities, resonance, novelty, search_path, resonance_trace
+        )
         result = ARTFieldResult(
             winner,
             activation,
@@ -166,6 +203,8 @@ class ARTField:
         vigilance_modulation: float = 0.0,
         learn: bool = False,
     ) -> ARTFieldState:
+        """Update the field and report the resulting state change."""
+
         previous = self._resize_activation(previous_activation)
         result = self.process(
             x,
@@ -180,6 +219,8 @@ class ARTField:
         return ARTFieldState(result, result.top_down_match.copy(), change)
 
     def match(self, x: np.ndarray) -> np.ndarray:
+        """Compute similarity between input and all prototypes."""
+
         return cosine_similarity(x, self.categories)
 
     def resonance(
@@ -188,6 +229,8 @@ class ARTField:
         category_index: int,
         vigilance: float | None = None,
     ) -> tuple[bool, list[float], np.ndarray]:
+        """Test a prototype against the input until resonance or reset."""
+
         threshold = self.vigilance if vigilance is None else vigilance
         prototype = self.categories[category_index]
         bottom_up = np.asarray(x, dtype=float).copy()
@@ -196,10 +239,15 @@ class ARTField:
 
         for _ in range(self.resonance_iterations):
             top_down = np.minimum(bottom_up, prototype)
-            refined = (1.0 - self.feedback_rate) * bottom_up + self.feedback_rate * top_down
+            refined = (
+                1.0 - self.feedback_rate
+            ) * bottom_up + self.feedback_rate * top_down
             match = float(np.sum(top_down) / (np.sum(np.maximum(x, 0.0)) + 1e-9))
             trace.append(match)
-            if match >= threshold and abs(match - previous_match) <= self.convergence_tolerance:
+            if (
+                match >= threshold
+                and abs(match - previous_match) <= self.convergence_tolerance
+            ):
                 return True, trace, top_down
             bottom_up = refined
             previous_match = match
@@ -207,29 +255,47 @@ class ARTField:
         return trace[-1] >= threshold, trace, np.minimum(bottom_up, prototype)
 
     def reset(self, available: np.ndarray, category_index: int) -> np.ndarray:
+        """Mark one category as unavailable during search."""
+
         updated = available.copy()
         updated[category_index] = False
         return updated
 
-    def learn(self, category_index: int, x: np.ndarray, learning_rate: float | None = None) -> None:
+    def learn(
+        self, category_index: int, x: np.ndarray, learning_rate: float | None = None
+    ) -> None:
+        """Update the selected prototype toward the current input."""
+
         rate = self.learning_rate if learning_rate is None else learning_rate
         x = np.asarray(x, dtype=float)
         prototype = self.categories[category_index]
         art_intersection = np.minimum(prototype, x)
-        self.categories[category_index] = normalize((1.0 - rate) * prototype + rate * art_intersection)
+        self.categories[category_index] = normalize(
+            (1.0 - rate) * prototype + rate * art_intersection
+        )
 
     def reconstruct(self, category_activation: np.ndarray) -> np.ndarray:
+        """Reconstruct an input vector from category activation."""
+
         if len(self.categories) == 0:
             return np.zeros(self.input_dim, dtype=float)
         activation = self._resize_activation(category_activation)
         return activation @ self.categories
 
-    def generate_from_category(self, category_index: int, noise_scale: float = 0.03) -> np.ndarray:
+    def generate_from_category(
+        self, category_index: int, noise_scale: float = 0.03
+    ) -> np.ndarray:
+        """Generate a noisy sample around a learned prototype."""
+
         prototype = self.categories[category_index]
         noise = self.rng.normal(0.0, noise_scale, self.input_dim)
         return np.clip(prototype + noise, 0.0, 1.0)
 
-    def _prepare_input(self, x: np.ndarray, top_down_bias: np.ndarray | None) -> np.ndarray:
+    def _prepare_input(
+        self, x: np.ndarray, top_down_bias: np.ndarray | None
+    ) -> np.ndarray:
+        """Resize and clip input and optional top-down bias."""
+
         x = np.asarray(x, dtype=float)
         if len(x) != self.input_dim:
             resized = np.zeros(self.input_dim, dtype=float)
@@ -239,7 +305,9 @@ class ARTField:
             bias = np.asarray(top_down_bias, dtype=float)
             if len(bias) != self.input_dim:
                 resized = np.zeros(self.input_dim, dtype=float)
-                resized[: min(len(bias), self.input_dim)] = bias[: min(len(bias), self.input_dim)]
+                resized[: min(len(bias), self.input_dim)] = bias[
+                    : min(len(bias), self.input_dim)
+                ]
                 bias = resized
             x = np.clip(x + bias, 0.0, 1.0)
         return x
@@ -249,12 +317,16 @@ class ARTField:
         similarities: np.ndarray,
         category_bias: np.ndarray | None,
     ) -> np.ndarray:
+        """Combine bottom-up similarity and category bias."""
+
         drive = similarities.copy()
         if category_bias is not None:
             drive += self._resize_activation(category_bias)
         return drive
 
     def _add_category(self, x: np.ndarray) -> int:
+        """Create a new prototype from the provided input vector."""
+
         if self.categories.size == 0:
             self.categories = np.asarray(x, dtype=float).reshape(1, -1).copy()
         else:
@@ -262,13 +334,17 @@ class ARTField:
         return len(self.categories) - 1
 
     def _resize_activation(self, activation: np.ndarray | None) -> np.ndarray:
+        """Fit an activation vector to the current category count."""
+
         size = len(self.categories)
         if size == 0:
             return np.empty(0, dtype=float)
         resized = np.zeros(size, dtype=float)
         if activation is not None:
             activation = np.asarray(activation, dtype=float)
-            resized[: min(size, len(activation))] = activation[: min(size, len(activation))]
+            resized[: min(size, len(activation))] = activation[
+                : min(size, len(activation))
+            ]
         if np.sum(resized) <= 1e-9:
             resized += 1.0 / size
         return resized / (np.sum(resized) + 1e-9)
@@ -282,9 +358,13 @@ class ARTField:
         search_path: list[int],
         resonance_trace: list[float],
     ) -> None:
+        """Emit a debug trace for one resonance search outcome."""
+
         if self.debug:
             sims = np.array2string(similarities, precision=2, suppress_small=True)
-            trace = np.array2string(np.asarray(resonance_trace), precision=3, suppress_small=True)
+            trace = np.array2string(
+                np.asarray(resonance_trace), precision=3, suppress_small=True
+            )
             print(
                 f"[{self.name}] winner={winner} resonance={resonance} novelty={novelty:.3f} "
                 f"search={search_path} similarities={sims} resonance_trace={trace}"

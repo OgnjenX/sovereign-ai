@@ -1,3 +1,5 @@
+"""Temporal transition ART field and linear compatibility wrapper."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
@@ -9,6 +11,8 @@ from sovereign_ai.art_field import ARTField
 
 @dataclass(frozen=True)
 class TemporalPrediction:
+    """Prediction summary returned by the transition model."""
+
     perceptual_bias: np.ndarray
     action_bias: np.ndarray
     confidence: float
@@ -31,10 +35,18 @@ class ARTTemporalField(ARTField):
         learning_rate: float = 0.08,
         seed: int | None = None,
     ) -> None:
+        """Initialize the temporal field and its transition buffers."""
+
         self.state_dim = state_dim
         self.action_count = action_count
-        self.perceptual_category_count = state_dim if perceptual_category_count is None else perceptual_category_count
-        self.action_category_count = action_count if action_category_count is None else action_category_count
+        self.perceptual_category_count = (
+            state_dim
+            if perceptual_category_count is None
+            else perceptual_category_count
+        )
+        self.action_category_count = (
+            action_count if action_category_count is None else action_category_count
+        )
         self.context_width = context_width
         self.input_width = (
             self.perceptual_category_count
@@ -45,7 +57,9 @@ class ARTTemporalField(ARTField):
         )
         self.uncertainty = np.ones(action_count, dtype=float)
         self.next_state_expectations = np.empty((0, state_dim), dtype=float)
-        self.next_perceptual_bias = np.empty((0, self.perceptual_category_count), dtype=float)
+        self.next_perceptual_bias = np.empty(
+            (0, self.perceptual_category_count), dtype=float
+        )
         self.next_action_bias = np.empty((0, self.action_category_count), dtype=float)
         self.sequence_counts = np.empty(0, dtype=float)
         self.mismatch_trace: list[float] = []
@@ -70,15 +84,25 @@ class ARTTemporalField(ARTField):
         )
 
     def predict(self, state: np.ndarray, action_distribution: np.ndarray) -> np.ndarray:
+        """Predict the next state from the current state and action mix."""
+
         if len(self.categories) == 0:
             return np.clip(np.asarray(state, dtype=float), 0.0, 1.0)
         probe = self.sequence_input(
-            previous_percept=self._state_to_category(self._last_state, self.perceptual_category_count),
+            previous_percept=self._state_to_category(
+                self._last_state, self.perceptual_category_count
+            ),
             action_category=self._fit(action_distribution, self.action_category_count),
-            current_percept=self._state_to_category(state, self.perceptual_category_count),
+            current_percept=self._state_to_category(
+                state, self.perceptual_category_count
+            ),
             context=np.empty(0),
         )
-        result = self.process(probe, category_bias=self._action_category_bias(action_distribution), learn=False)
+        result = self.process(
+            probe,
+            category_bias=self._action_category_bias(action_distribution),
+            learn=False,
+        )
         self._ensure_associations(np.asarray(state, dtype=float))
         activation = result.category_activation
         expected = activation @ self.next_state_expectations[: len(activation)]
@@ -98,38 +122,98 @@ class ARTTemporalField(ARTField):
 
     def learn(
         self,
-        state: np.ndarray,
-        action_distribution: np.ndarray,
-        next_state: np.ndarray,
-        learning_rate: float | None = None,
+        category_index: int | np.ndarray,
+        x: np.ndarray,
+        learning_rate: float | np.ndarray | None = None,
         previous_percept: np.ndarray | None = None,
         action_category: np.ndarray | None = None,
         current_percept: np.ndarray | None = None,
         context: np.ndarray | None = None,
     ) -> None:
-        previous = self._state_to_category(state, self.perceptual_category_count) if previous_percept is None else previous_percept
-        action = self._fit(action_distribution if action_category is None else action_category, self.action_category_count)
-        current = self._state_to_category(next_state, self.perceptual_category_count) if current_percept is None else current_percept
-        x = self.sequence_input(previous, action, current, np.empty(0) if context is None else context)
+        """Update transition statistics from either a category or raw state."""
+
+        if isinstance(category_index, (int, np.integer)):
+            rate = (
+                learning_rate
+                if isinstance(learning_rate, (int, float, np.floating))
+                else None
+            )
+            super().learn(int(category_index), x, None if rate is None else float(rate))
+            return
+
+        state = np.asarray(category_index, dtype=float)
+        action_distribution = np.asarray(x, dtype=float)
+        next_state = (
+            state if learning_rate is None else np.asarray(learning_rate, dtype=float)
+        )
+        self._learn_transition_core(
+            state,
+            action_distribution,
+            next_state,
+            previous_percept=previous_percept,
+            action_category=action_category,
+            current_percept=current_percept,
+            context=context,
+        )
+
+    def _learn_transition_core(
+        self,
+        state: np.ndarray,
+        action_distribution: np.ndarray,
+        next_state: np.ndarray,
+        *,
+        previous_percept: np.ndarray | None = None,
+        action_category: np.ndarray | None = None,
+        current_percept: np.ndarray | None = None,
+        context: np.ndarray | None = None,
+    ) -> None:
+        """Apply the core transition-learning update for a state/action pair."""
+
+        previous = (
+            self._state_to_category(state, self.perceptual_category_count)
+            if previous_percept is None
+            else previous_percept
+        )
+        action = self._fit(
+            action_distribution if action_category is None else action_category,
+            self.action_category_count,
+        )
+        current = (
+            self._state_to_category(next_state, self.perceptual_category_count)
+            if current_percept is None
+            else current_percept
+        )
+        sequence = self.sequence_input(
+            previous, action, current, np.empty(0) if context is None else context
+        )
         before_count = len(self.categories)
-        result = self.process(x, category_bias=self._action_category_bias(action), learn=False)
+        result = self.process(
+            sequence, category_bias=self._action_category_bias(action), learn=False
+        )
         self._ensure_associations(np.asarray(next_state, dtype=float))
-        rate = self.learning_rate if learning_rate is None else learning_rate
-        super().learn(result.category_index, x, rate)
+        rate = self.learning_rate
+        super().learn(result.category_index, sequence, rate)
         self.next_state_expectations[result.category_index] += rate * (
-            np.asarray(next_state, dtype=float) - self.next_state_expectations[result.category_index]
+            np.asarray(next_state, dtype=float)
+            - self.next_state_expectations[result.category_index]
         )
         self.next_perceptual_bias[result.category_index] += rate * (
-            self._fit(current, self.perceptual_category_count) - self.next_perceptual_bias[result.category_index]
+            self._fit(current, self.perceptual_category_count)
+            - self.next_perceptual_bias[result.category_index]
         )
         self.next_action_bias[result.category_index] += rate * (
-            self._fit(action, self.action_category_count) - self.next_action_bias[result.category_index]
+            self._fit(action, self.action_category_count)
+            - self.next_action_bias[result.category_index]
         )
         self.sequence_counts[result.category_index] += 1.0
         prediction = self.predict(state, action_distribution)
-        error_norm = float(np.linalg.norm(np.asarray(next_state, dtype=float) - prediction))
+        error_norm = float(
+            np.linalg.norm(np.asarray(next_state, dtype=float) - prediction)
+        )
         action_distribution = self._action_distribution(action_distribution)
-        self.uncertainty = 0.98 * self.uncertainty + 0.02 * action_distribution * error_norm
+        self.uncertainty = (
+            0.98 * self.uncertainty + 0.02 * action_distribution * error_norm
+        )
         if before_count != len(self.categories):
             self.uncertainty += 0.01 * action_distribution
         self._last_state = np.asarray(next_state, dtype=float).copy()
@@ -141,13 +225,21 @@ class ARTTemporalField(ARTField):
         current_percept: np.ndarray,
         context: np.ndarray,
     ) -> TemporalPrediction:
+        """Predict category-level future bias without learning."""
+
         if len(self.categories) == 0:
             return self.last_prediction
-        x = self.sequence_input(previous_percept, action_category, current_percept, context)
-        result = self.process(x, category_bias=self._action_category_bias(action_category), learn=False)
+        x = self.sequence_input(
+            previous_percept, action_category, current_percept, context
+        )
+        result = self.process(
+            x, category_bias=self._action_category_bias(action_category), learn=False
+        )
         self._ensure_associations(np.zeros(self.state_dim, dtype=float))
         activation = result.category_activation
-        confidence = float(max(result.resonance_trace) if result.resonance_trace else 0.0)
+        confidence = float(
+            max(result.resonance_trace) if result.resonance_trace else 0.0
+        )
         prediction = TemporalPrediction(
             activation @ self.next_perceptual_bias[: len(activation)],
             activation @ self.next_action_bias[: len(activation)],
@@ -168,6 +260,8 @@ class ARTTemporalField(ARTField):
         context: np.ndarray,
         phase: float = 0.0,
     ) -> np.ndarray:
+        """Pack perceptual, action, and contextual traces into one vector."""
+
         return np.concatenate(
             [
                 self._fit(previous_percept, self.perceptual_category_count),
@@ -178,7 +272,11 @@ class ARTTemporalField(ARTField):
             ]
         )
 
-    def prediction_bias(self, state: np.ndarray, action_distribution: np.ndarray) -> np.ndarray:
+    def prediction_bias(
+        self, state: np.ndarray, action_distribution: np.ndarray
+    ) -> np.ndarray:
+        """Return the prediction residual for a state-action pair."""
+
         return self.predict(state, action_distribution) - np.asarray(state, dtype=float)
 
     def _add_category(self, x: np.ndarray) -> int:
@@ -189,8 +287,16 @@ class ARTTemporalField(ARTField):
     def _ensure_associations(self, default_state: np.ndarray) -> None:
         count = len(self.categories)
         if len(self.next_state_expectations) < count:
-            additions = np.repeat(np.asarray(default_state, dtype=float).reshape(1, -1), count - len(self.next_state_expectations), axis=0)
-            self.next_state_expectations = additions if len(self.next_state_expectations) == 0 else np.vstack([self.next_state_expectations, additions])
+            additions = np.repeat(
+                np.asarray(default_state, dtype=float).reshape(1, -1),
+                count - len(self.next_state_expectations),
+                axis=0,
+            )
+            self.next_state_expectations = (
+                additions
+                if len(self.next_state_expectations) == 0
+                else np.vstack([self.next_state_expectations, additions])
+            )
         if self.next_perceptual_bias.shape != (count, self.perceptual_category_count):
             resized = np.zeros((count, self.perceptual_category_count), dtype=float)
             rows = min(count, self.next_perceptual_bias.shape[0])
@@ -204,7 +310,9 @@ class ARTTemporalField(ARTField):
                 resized[:rows] = self.next_action_bias[:rows]
             self.next_action_bias = resized
         if len(self.sequence_counts) < count:
-            self.sequence_counts = np.pad(self.sequence_counts, (0, count - len(self.sequence_counts)))
+            self.sequence_counts = np.pad(
+                self.sequence_counts, (0, count - len(self.sequence_counts))
+            )
 
     def _action_distribution(self, action_distribution: np.ndarray) -> np.ndarray:
         return self._fit(action_distribution, self.action_count)
@@ -243,5 +351,3 @@ class ARTTemporalField(ARTField):
 
 class LinearTransitionModel(ARTTemporalField):
     """Compatibility wrapper preserving the old constructor name."""
-
-    pass

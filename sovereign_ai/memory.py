@@ -1,3 +1,5 @@
+"""Stateful memory utilities for short and long-term cognitive traces."""
+
 from __future__ import annotations
 
 import numpy as np
@@ -16,20 +18,28 @@ class Memory:
         self.action_trace: list[int] = []
 
     def update_stm(self, activation_pattern: np.ndarray) -> None:
+        """Update short-term memory and decayed trace from a new pattern."""
+
         pattern = np.asarray(activation_pattern, dtype=float)
         self.stm = pattern.copy()
         self.trace = self.decay * self.trace + (1.0 - self.decay) * pattern
 
     def bind_ltm(self, learned_weights: np.ndarray) -> None:
+        """Replace long-term memory with learned prototype weights."""
+
         self.ltm = np.asarray(learned_weights, dtype=float)
 
     def record_transition(self, category_index: int, action_index: int) -> None:
+        """Record the latest category-action transition in bounded traces."""
+
         self.category_trace.append(category_index)
         self.action_trace.append(action_index)
         del self.category_trace[:-self.sequence_length]
         del self.action_trace[:-self.sequence_length]
 
     def sequence_context(self) -> float:
+        """Return a simple recency-weighted score for recent action trace."""
+
         if not self.action_trace:
             return 0.0
         recency = np.linspace(0.3, 1.0, len(self.action_trace))

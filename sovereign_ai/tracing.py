@@ -1,3 +1,5 @@
+"""Structured tracing primitives and recorder for ART dynamics."""
+
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
@@ -9,11 +11,9 @@ import numpy as np
 
 
 @dataclass(frozen=True)
-class FieldTrace:
-    field_name: str
-    step: int
-    iteration: int
-    category_index: int
+class FieldMetrics:
+    """Per-iteration match and vigilance metrics for a field event."""
+
     resonance: bool
     vigilance: float
     match: float
@@ -23,7 +23,56 @@ class FieldTrace:
 
 
 @dataclass(frozen=True)
+class FieldTrace:
+    """Recorded iteration for one field during convergence."""
+
+    field_name: str
+    step: int
+    iteration: int
+    category_index: int
+    metrics: FieldMetrics
+
+    @property
+    def resonance(self) -> bool:
+        """Expose resonance state for backward-compatible access."""
+
+        return self.metrics.resonance
+
+    @property
+    def vigilance(self) -> float:
+        """Expose effective vigilance used during category search."""
+
+        return self.metrics.vigilance
+
+    @property
+    def match(self) -> float:
+        """Expose best match score for backward-compatible access."""
+
+        return self.metrics.match
+
+    @property
+    def search_path(self) -> list[int]:
+        """Expose evaluated category path for backward-compatible access."""
+
+        return self.metrics.search_path
+
+    @property
+    def novelty(self) -> float:
+        """Expose novelty score for backward-compatible access."""
+
+        return self.metrics.novelty
+
+    @property
+    def change(self) -> float:
+        """Expose activation delta for backward-compatible access."""
+
+        return self.metrics.change
+
+
+@dataclass(frozen=True)
 class ProjectionTrace:
+    """Recorded update event for an associative projection."""
+
     name: str
     step: int
     update_norm: float
@@ -33,6 +82,8 @@ class ProjectionTrace:
 
 @dataclass(frozen=True)
 class BehaviorTrace:
+    """Recorded behavior-level outcome for a simulation step."""
+
     step: int
     action: int
     reward: float
@@ -53,83 +104,77 @@ class TraceRecorder:
 
     def record_field(
         self,
-        field_name: str,
-        step: int,
-        iteration: int,
-        category_index: int,
-        resonance: bool,
-        vigilance: float,
-        match: float,
-        search_path: list[int],
-        novelty: float,
-        change: float,
+        trace: FieldTrace,
         category_count: int | None = None,
     ) -> None:
-        self.field_traces.append(
-            FieldTrace(
-                field_name,
-                int(step),
-                int(iteration),
-                int(category_index),
-                bool(resonance),
-                float(vigilance),
-                float(match),
-                [int(item) for item in search_path],
-                float(novelty),
-                float(change),
+        """Record a single field convergence event."""
+
+        normalized = FieldTrace(
+            field_name=trace.field_name,
+            step=int(trace.step),
+            iteration=int(trace.iteration),
+            category_index=int(trace.category_index),
+            metrics=FieldMetrics(
+                resonance=bool(trace.resonance),
+                vigilance=float(trace.vigilance),
+                match=float(trace.match),
+                search_path=[int(item) for item in trace.search_path],
+                novelty=float(trace.novelty),
+                change=float(trace.change),
+            ),
+        )
+        self.field_traces.append(normalized)
+        if category_count is not None:
+            self.category_counts[normalized.field_name] = int(category_count)
+
+    def record_projection(self, trace: ProjectionTrace) -> None:
+        """Record a projection learning event."""
+
+        self.projection_traces.append(
+            ProjectionTrace(
+                name=trace.name,
+                step=int(trace.step),
+                update_norm=float(trace.update_norm),
+                source_size=int(trace.source_size),
+                target_size=int(trace.target_size),
             )
         )
-        if category_count is not None:
-            self.category_counts[field_name] = int(category_count)
 
-    def record_projection(
-        self,
-        name: str,
-        step: int,
-        update_norm: float,
-        source_size: int,
-        target_size: int,
-    ) -> None:
-        self.projection_traces.append(
-            ProjectionTrace(name, int(step), float(update_norm), int(source_size), int(target_size))
-        )
+    def record_behavior(self, trace: BehaviorTrace) -> None:
+        """Record one behavior-level step trace."""
 
-    def record_behavior(
-        self,
-        step: int,
-        action: int,
-        reward: float,
-        value: float,
-        goal_alignment: float,
-        temporal_mismatch: float,
-        imagination_accepted: bool,
-    ) -> None:
         self.behavior_traces.append(
             BehaviorTrace(
-                int(step),
-                int(action),
-                float(reward),
-                float(value),
-                float(goal_alignment),
-                float(temporal_mismatch),
-                bool(imagination_accepted),
+                step=int(trace.step),
+                action=int(trace.action),
+                reward=float(trace.reward),
+                value=float(trace.value),
+                goal_alignment=float(trace.goal_alignment),
+                temporal_mismatch=float(trace.temporal_mismatch),
+                imagination_accepted=bool(trace.imagination_accepted),
             )
         )
 
     def to_dict(self) -> dict[str, Any]:
+        """Serialize all traces and summary metrics to a dictionary."""
+
         return {
-            "fields": [asdict(item) for item in self.field_traces],
+            "fields": [_field_trace_to_dict(item) for item in self.field_traces],
             "projections": [asdict(item) for item in self.projection_traces],
             "behavior": [asdict(item) for item in self.behavior_traces],
             "summary": self.summary(),
         }
 
     def to_json(self, path: str | Path) -> None:
+        """Write trace payload to a JSON file."""
+
         path = Path(path)
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(self.to_dict(), indent=2), encoding="utf-8")
 
     def summary(self) -> dict[str, Any]:
+        """Compute aggregate trace statistics across fields and behavior."""
+
         field_names = sorted({trace.field_name for trace in self.field_traces})
         field_summary: dict[str, dict[str, float | int]] = {}
         for name in field_names:
@@ -173,13 +218,34 @@ class TraceRecorder:
 
 
 def _mean(values: list[float]) -> float:
+    """Return mean value or zero for an empty list."""
+
     if not values:
         return 0.0
     return float(np.mean(values))
 
 
 def _trend(values: list[float]) -> float:
+    """Estimate trend as second-half mean minus first-half mean."""
+
     if len(values) < 2:
         return 0.0
     split = max(1, len(values) // 2)
     return _mean(values[split:]) - _mean(values[:split])
+
+
+def _field_trace_to_dict(trace: FieldTrace) -> dict[str, Any]:
+    """Serialize field trace using legacy flat keys for compatibility."""
+
+    return {
+        "field_name": trace.field_name,
+        "step": trace.step,
+        "iteration": trace.iteration,
+        "category_index": trace.category_index,
+        "resonance": trace.resonance,
+        "vigilance": trace.vigilance,
+        "match": trace.match,
+        "search_path": trace.search_path,
+        "novelty": trace.novelty,
+        "change": trace.change,
+    }
