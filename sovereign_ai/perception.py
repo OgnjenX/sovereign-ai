@@ -8,15 +8,8 @@ from sovereign_ai.art_field import ARTField, ARTFieldResult, ARTFieldState
 
 
 @dataclass(frozen=True)
-class PerceptionResult:
-    category_index: int
-    category_activation: np.ndarray
-    similarities: np.ndarray
-    resonance: bool
-    novelty: float
-    search_path: list[int]
-    resonance_trace: list[float]
-    top_down_match: np.ndarray
+class PerceptionResult(ARTFieldResult):
+    """Perception-specialized result preserving ART field contract."""
 
 
 @dataclass(frozen=True)
@@ -153,6 +146,7 @@ class ARTPerceptualField(ARTField):
             result.search_path,
             result.resonance_trace,
             result.top_down_match,
+            result.effective_vigilance,
         )
 
 
